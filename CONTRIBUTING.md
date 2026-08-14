@@ -189,7 +189,7 @@ first open-testing release.
 
 ---
 
-## 7. Reference material
+## 7. Reference material & imagery
 
 42 concept boards live in `~/Downloads/rahi-website/`. Consistent language:
 
@@ -199,5 +199,19 @@ first open-testing release.
 - glowing route lines with waypoint pins
 - sparkline charts, big percentage deltas
 
-The photography is a large part of why they read well. The built layouts are
-ready for images; they currently render on the grid background alone.
+### `public/images/` provenance
+
+The four photos on the landing page (`city`, `valley`, `beach`, `dusk`) are
+**crops of those AI-generated concept boards** — clean photographic regions cut
+out with ffmpeg, avoiding the boards' baked-in text and UI. They are
+placeholders with the right mood, not real captures. When real trip photography
+exists (the app records video; stills from real drives are the honest version),
+swap these in place and keep the filenames — the page's captions and layout
+don't need to change.
+
+Two crops keep a small piece of baked-in board art *on purpose*: `beach.jpg`
+has a lime HUD timestamp (reads as dashcam footage) and `dusk.jpg` has a lime
+route line on the road (it IS the product's motif). Don't clone them out.
+
+Keep photos as framed cards, not full-bleed backdrops — the crops are only
+~450–650px wide, which is sharp inside a card and soft stretched across a hero.

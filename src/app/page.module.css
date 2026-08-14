@@ -95,6 +95,12 @@
   color: var(--text-primary);
 }
 
+.headerNav {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
 .headerLink {
   font-size: 14px;
   color: var(--text-secondary);
@@ -365,6 +371,479 @@
   }
 }
 
+/* ---- Scroll reveal ------------------------------------------------------ */
+/* Below-the-fold twin of .reveal: hidden until an ancestor (InView.tsx) flips
+   data-inview="true", then transitions on transform/opacity only. The hidden
+   state is gated on `scripting: enabled` so a no-JS visitor sees everything. */
+@media (scripting: enabled) {
+  .sr {
+    opacity: 0;
+    transform: translate3d(0, 24px, 0);
+  }
+}
+
+.sr {
+  transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--delay, 0ms);
+}
+
+[data-inview="true"] .sr {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---- Shared section scaffolding ----------------------------------------- */
+.section {
+  margin-top: clamp(88px, 13vh, 148px);
+}
+
+.sectionHead {
+  max-width: 640px;
+  margin: 0 auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.sectionHead .sectionSub {
+  margin: 0;
+}
+
+/* ---- Moment timeline ----------------------------------------------------- */
+.momentCard {
+  margin-top: clamp(32px, 6vh, 52px);
+  padding: 22px 22px 24px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--divider);
+  background: var(--surface);
+  box-shadow: var(--card-shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-width: 860px;
+  margin-inline: auto;
+}
+
+.momentCardTop {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.momentCardTitle {
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.momentCardHint {
+  font-size: 12px;
+  font-weight: 300;
+  color: var(--text-tertiary);
+}
+
+.momentRow {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 0 6px;
+}
+
+/* Connective line behind the nodes. Fixed px offsets match the fixed-height
+   time row + gap + half node below — decorative, so the rigidity is fine. */
+.momentRow::before {
+  content: "";
+  position: absolute;
+  left: 5%;
+  right: 5%;
+  top: 34px;
+  height: 1px;
+  background: var(--divider);
+}
+
+.moment {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.momentTime {
+  font-size: 11px;
+  line-height: 16px;
+  letter-spacing: 0.05em;
+  color: var(--text-tertiary);
+}
+
+/* The node punches out the line behind it with the card's own surface. */
+.momentNode {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--surface);
+  display: grid;
+  place-items: center;
+}
+
+.momentNode::after {
+  content: "";
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.momentHot .momentNode {
+  border: 1.5px solid var(--risk);
+  box-shadow: 0 0 16px color-mix(in srgb, var(--risk) 30%, transparent);
+}
+
+.momentHot .momentNode::after {
+  background: var(--risk);
+}
+
+.momentName {
+  font-size: 12.5px;
+  font-weight: 300;
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+.momentHot .momentName {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.momentDetail {
+  border: 1px solid var(--divider);
+  border-radius: var(--radius);
+  background: var(--surface-muted);
+  padding: 18px 18px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.momentDetailHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.momentDetailTitle {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.riskChip {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--risk);
+  border: 1px solid color-mix(in srgb, var(--risk) 45%, transparent);
+  border-radius: 999px;
+  padding: 3px 11px;
+}
+
+.momentDetailSub {
+  margin: 0;
+  font-size: 13.5px;
+  font-weight: 300;
+  line-height: 1.65;
+  color: var(--text-secondary);
+  max-width: 60ch;
+}
+
+.decel {
+  width: 100%;
+  height: 64px;
+  margin-top: 2px;
+}
+
+/* ---- Coach section ------------------------------------------------------- */
+.coachSection {
+  display: grid;
+  grid-template-columns: 0.85fr 1.15fr;
+  align-items: center;
+  gap: clamp(24px, 5vw, 64px);
+}
+
+.coachPhoto {
+  aspect-ratio: 3 / 4;
+  width: 100%;
+  max-width: 420px;
+  justify-self: center;
+}
+
+.coachCopy {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+}
+
+.coachCard {
+  border: 1px solid var(--divider);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--card-shadow);
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.coachCardLabel {
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.coachQuote {
+  margin: 0;
+  font-size: 15.5px;
+  font-weight: 300;
+  line-height: 1.7;
+  color: var(--text-primary);
+}
+
+.focusList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.focusRow {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  align-items: center;
+  gap: 14px;
+}
+
+.focusName {
+  font-size: 12.5px;
+  color: var(--text-secondary);
+}
+
+.focusTrack {
+  display: block;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--surface-muted);
+  overflow: hidden;
+}
+
+.focusFill {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: var(--accent);
+}
+
+/* ---- Photo cards --------------------------------------------------------- */
+/* The reference boards' core trick: real road photography under a dark
+   gradient, caption pinned to the shaded bottom edge. The shade guarantees
+   caption legibility, so the caption colours are fixed white in both themes. */
+.photoCard {
+  position: relative;
+  margin: 0;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--divider);
+  background: var(--surface);
+}
+
+.photoCard img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.photoShade {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 45%, rgba(0, 0, 0, 0.74) 100%);
+}
+
+.photoTag {
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.photoTitle {
+  font-size: 14.5px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.photoCaption {
+  font-size: 12.5px;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+/* ---- Mission ------------------------------------------------------------- */
+.mission {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--divider);
+  background: var(--surface-muted);
+  padding: clamp(40px, 7vw, 72px) clamp(20px, 5vw, 64px);
+}
+
+/* One static radial wash — painted once, never animated. */
+.mission::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse 70% 45% at 50% 0%, var(--accent-muted), transparent 70%);
+  opacity: 0.5;
+}
+
+.mission > * {
+  position: relative;
+}
+
+.relayWrap {
+  margin-top: clamp(28px, 5vh, 48px);
+  display: flex;
+  justify-content: center;
+}
+
+.relay {
+  width: 100%;
+  max-width: 800px;
+  height: auto;
+}
+
+.relaySteps {
+  margin-top: clamp(20px, 4vh, 36px);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(216px, 1fr));
+  gap: 16px;
+}
+
+.relayStep {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 18px;
+  border-radius: var(--radius);
+  border: 1px solid var(--divider);
+  background: var(--surface);
+  box-shadow: var(--card-shadow);
+}
+
+.relayIndex {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  color: var(--accent);
+}
+
+.relayTitle {
+  font-size: 15.5px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.relayBody {
+  font-size: 13.5px;
+  font-weight: 300;
+  line-height: 1.65;
+  color: var(--text-secondary);
+}
+
+.missionLine {
+  margin: clamp(28px, 5vh, 44px) auto 0;
+  text-align: center;
+  font-size: clamp(1.05rem, 2.4vw, 1.3rem);
+  font-weight: 300;
+  line-height: 1.6;
+  color: var(--text-primary);
+  max-width: 44ch;
+}
+
+/* ---- Stories ------------------------------------------------------------- */
+.storyGrid {
+  margin-top: clamp(32px, 6vh, 56px);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 18px;
+}
+
+.storyCard {
+  aspect-ratio: 4 / 5;
+}
+
+/* ---- Manifesto ----------------------------------------------------------- */
+.manifesto {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 22px;
+}
+
+.manifestoLine {
+  margin: 0;
+  font-size: clamp(2rem, 5.4vw, 3.4rem);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.035em;
+}
+
+.manifestoBody {
+  margin: 0;
+  font-size: 1.02rem;
+  font-weight: 300;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  max-width: 52ch;
+}
+
+.manifestoCta {
+  margin-top: 6px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+}
+
+.ctaLink {
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--accent);
+  transition: opacity 0.25s ease;
+}
+
+.ctaLink:hover {
+  opacity: 0.8;
+}
+
 /* ---- Responsive --------------------------------------------------------- */
 @media (max-width: 860px) {
   .radarSection {
@@ -376,6 +855,24 @@
   }
   .sectionSub {
     margin-inline: auto;
+  }
+  .coachSection {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+  /* Copy first, photo after — the argument sells the picture, not the
+     other way round. */
+  .coachPhoto {
+    order: 2;
+    max-width: 520px;
+    aspect-ratio: 16 / 10;
+  }
+  .coachCopy {
+    align-items: center;
+  }
+  .coachCard {
+    text-align: left;
+    width: 100%;
   }
 }
 
@@ -394,5 +891,20 @@
      thin squiggle, so give it more height rather than letting it flatten. */
   .route {
     min-height: 120px;
+  }
+  .momentTime {
+    font-size: 10px;
+  }
+  .momentName {
+    font-size: 11px;
+  }
+  .momentRow {
+    padding: 0;
+  }
+  .relay {
+    min-height: 150px;
+  }
+  .storyCard {
+    aspect-ratio: 16 / 10;
   }
 }

@@ -317,6 +317,82 @@ svg {
   animation: dotIn 0.45s cubic-bezier(0.22, 1, 0.36, 1) backwards;
 }
 
+/* ---- Scroll-triggered variants ------------------------------------------
+   Elements carrying these classes start hidden and animate the first time an
+   ancestor flips data-inview="true" (see InView.tsx). Same rule as above:
+   they are referenced from SVG components, so they must be global.
+
+   The hidden starting states are gated on `scripting: enabled` so a no-JS
+   visitor (or a crawler) sees the complete page rather than a blank one. */
+@media (scripting: enabled) {
+  .vDraw {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+  }
+  .vDot,
+  .vFade,
+  .vHalo,
+  .vRadar {
+    opacity: 0;
+  }
+}
+
+.vDot,
+.vHalo {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+[data-inview="true"] .vDraw {
+  animation: drawLine 1.5s cubic-bezier(0.33, 0.9, 0.32, 1) both;
+  animation-delay: var(--d, 0ms);
+}
+
+[data-inview="true"] .vDot {
+  animation: dotIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: var(--d, 0ms);
+}
+
+[data-inview="true"] .vFade {
+  animation: fadeIn 0.8s ease-out both;
+  animation-delay: var(--d, 0ms);
+}
+
+/* The radar polygon resolving from the centre. */
+.vRadar {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+[data-inview="true"] .vRadar {
+  animation: radarIn 1.2s cubic-bezier(0.22, 1, 0.36, 1) 0.15s both;
+}
+
+/* Reuses the waypoint-halo keyframes; scale/opacity only. */
+[data-inview="true"] .vHalo {
+  animation: pinHalo 3s cubic-bezier(0.22, 1, 0.36, 1) var(--d, 0ms) infinite backwards;
+}
+
+/* Bars fill by scaleX — never by width. The element sets its resting scale
+   through --sx so the keyframes' end state and the inline style agree. */
+.vGrow {
+  transform-origin: left center;
+}
+
+[data-inview="true"] .vGrow {
+  animation: growBar 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: var(--d, 0ms);
+}
+
+@keyframes growBar {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(var(--sx, 1));
+  }
+}
+
 /* Respect a reduced-motion preference: the tour animates a lot, and
    vestibular disorders are triggered by exactly this kind of movement. */
 @media (prefers-reduced-motion: reduce) {

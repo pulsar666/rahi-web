@@ -75,17 +75,16 @@ export function AxisRadar({ className }: { className?: string }) {
       })}
 
       {/* The driver's shape. scale-in from the centre so it reads as the
-          score resolving, not as a shape sliding in from off-canvas. */}
+          score resolving, not as a shape sliding in from off-canvas. The
+          animation waits for the section to scroll into view (data-inview
+          on an ancestor — see InView.tsx). */}
       <polygon
         points={shape}
         fill="var(--accent-muted)"
         stroke="var(--accent)"
         strokeWidth={2}
         strokeLinejoin="round"
-        style={{
-          transformOrigin: "center",
-          animation: "radarIn 1.2s cubic-bezier(0.22, 1, 0.36, 1) 0.35s backwards",
-        }}
+        className="vRadar"
       />
 
       {/* Vertex dots */}
@@ -98,9 +97,8 @@ export function AxisRadar({ className }: { className?: string }) {
             cy={y}
             r={3.5}
             fill="var(--accent)"
-            style={{
-              animation: `dotIn 0.5s ease-out ${0.9 + i * 0.08}s backwards`,
-            }}
+            className="vDot"
+            style={{ "--d": `${550 + i * 80}ms` } as React.CSSProperties}
           />
         );
       })}
@@ -120,9 +118,8 @@ export function AxisRadar({ className }: { className?: string }) {
             fill="var(--text-secondary)"
             fontSize={12.5}
             fontWeight={500}
-            style={{
-              animation: `dotIn 0.5s ease-out ${1 + i * 0.08}s backwards`,
-            }}
+            className="vFade"
+            style={{ "--d": `${650 + i * 80}ms` } as React.CSSProperties}
           >
             {axis.name}
           </text>
