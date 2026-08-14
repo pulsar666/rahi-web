@@ -19,6 +19,11 @@ const nextConfig: NextConfig = {
   // Emit /privacy/index.html instead of /privacy.html so the static host
   // resolves the bare /privacy path without a redirect.
   trailingSlash: true,
+  // Dev-only: lets phones on the LAN load the dev server (http://<mac-ip>:3000).
+  // Without this Next blocks cross-origin dev assets, React never hydrates on
+  // the phone, and every button silently does nothing. No effect on the
+  // static export.
+  allowedDevOrigins: ["192.168.1.2", "192.168.1.3", "192.168.1.4", "192.168.1.5"],
 };
 
 export default nextConfig;

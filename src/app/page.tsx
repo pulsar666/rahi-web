@@ -125,7 +125,7 @@ export default function Home() {
         <div className={styles.featureCopy}>
           <p className={styles.sectionLabel}>Your driving portrait</p>
           <h2>One drive.<br /><span>More than a score.</span></h2>
-          <p>Rahi learns the rhythm beneath your route: how early you read traffic, how calmly you carry speed, how smoothly you ask the car to move.</p>
+          <p>Rahi learns the rhythm beneath your route: how early you ease off, how calmly you carry speed, how smoothly you ask the car to move.</p>
           <div className={styles.scoreList}>
             {scores.map(([label, value], index) => <div className={styles.scoreRow} key={label}><span>{label}</span><i><b style={{ width: `${91 - index * 8}%` }} /></i><strong>{value}</strong></div>)}
           </div>
@@ -143,7 +143,7 @@ export default function Home() {
           <p className={styles.sectionLabel}>Coaching that remembers</p>
           <h2>Your coach changes<br /><span>as you do.</span></h2>
           <p>Not generic advice. Rahi returns to the exact moment, explains what shaped it, and gives you one useful thought for the next road.</p>
-          <blockquote>“Lovely read on the truck ahead. You lifted early, stayed settled, and never needed the brake.”</blockquote>
+          <blockquote>“Lovely anticipation on that slowdown — you eased off early, stayed settled, and never needed a hard brake.”</blockquote>
         </div>
       </section>
 
