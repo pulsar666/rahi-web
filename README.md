@@ -6,6 +6,10 @@ Next.js static export, deployed to GitHub Pages by
 [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml) on every push to
 `main`.
 
+> **Working on this?** Read [CONTRIBUTING.md](CONTRIBUTING.md) first — it covers
+> the deploy chain, the GoDaddy DNS records, brand parity with the Android app,
+> and the performance contract the animations have to stay inside.
+
 ## Local
 
 ```bash
