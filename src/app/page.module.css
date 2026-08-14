@@ -67,7 +67,7 @@
   display: flex;
   align-items: center;
   color: #f1f1ed;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 500;
   letter-spacing: 0.025em;
   transition: color 0.2s ease, background 0.2s ease, transform 0.2s ease;
@@ -238,7 +238,7 @@
   align-items: center;
   gap: 8px;
   color: var(--accent);
-  font-size: 9.5px;
+  font-size: 10px;
   font-weight: 600;
   letter-spacing: 0.18em;
 }
@@ -277,7 +277,7 @@
 }
 
 .heroTelemetry small {
-  font-size: 8.5px;
+  font-size: 9px;
   letter-spacing: 0.15em;
   color: #8a8d84;
 }
@@ -307,7 +307,7 @@
   align-items: center;
   gap: 6px;
   color: var(--ink-4);
-  font-size: 9px;
+  font-size: 9.5px;
   font-weight: 600;
   line-height: 1;
   letter-spacing: 0.15em;
@@ -317,7 +317,7 @@
 
 .miniLabel strong {
   color: var(--gold);
-  font-size: 11px;
+  font-size: 11.5px;
   font-weight: 600;
   letter-spacing: 0.1em;
 }
@@ -419,7 +419,7 @@
 
 .scoreDial small {
   color: var(--ink-4);
-  font-size: 8px;
+  font-size: 8.5px;
   font-weight: 600;
   line-height: 1;
   letter-spacing: 0.14em;
@@ -440,7 +440,7 @@
 
 .scoreDial i {
   color: var(--ink-4);
-  font-size: 10px;
+  font-size: 10.5px;
   font-style: normal;
   font-weight: 500;
   letter-spacing: 0;
@@ -470,7 +470,7 @@
 
 .scoreMeta small {
   color: var(--ink-4);
-  font-size: 8px;
+  font-size: 8.5px;
   font-weight: 600;
   letter-spacing: 0.15em;
   text-transform: uppercase;
@@ -487,7 +487,7 @@
 .scoreMeta span {
   margin-top: 3px;
   color: var(--ink-3);
-  font-size: 10px;
+  font-size: 11px;
 }
 
 /* Right: the tier track. */
@@ -575,14 +575,14 @@
   top: 10px;
   left: 12px;
   color: #61655d;
-  font-size: 9px;
+  font-size: 9.5px;
   font-weight: 600;
   line-height: 1;
   letter-spacing: 0.12em;
 }
 
 .tier > strong {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 500;
   line-height: 1.1;
   text-align: center;
@@ -612,7 +612,7 @@
   justify-content: space-between;
   gap: 16px;
   color: #6b6e66;
-  font-size: 9.5px;
+  font-size: 10.5px;
   line-height: 1.4;
 }
 
@@ -726,14 +726,14 @@
 }
 
 .featureVisual figcaption span {
-  font-size: 9px;
+  font-size: 9.5px;
   font-weight: 600;
   letter-spacing: 0.15em;
   color: var(--accent);
 }
 
 .featureVisual figcaption strong {
-  font-size: 13px;
+  font-size: 13.5px;
   margin-top: 4px;
 }
 
@@ -748,7 +748,7 @@
   gap: 12px;
   padding: 12px 0;
   border-bottom: 1px solid #252622;
-  font-size: 12px;
+  font-size: 12.5px;
 }
 
 .scoreRow i {
@@ -810,7 +810,7 @@
   border-left: 2px solid var(--accent);
   background: #080a08cc;
   color: #d7d8d2;
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.7;
 }
 
@@ -873,14 +873,14 @@
 }
 
 .roadBadge small {
-  font-size: 9px;
+  font-size: 9.5px;
   font-weight: 600;
   color: var(--accent);
   letter-spacing: 0.12em;
 }
 
 .roadBadge strong {
-  font-size: 12px;
+  font-size: 13px;
   margin-top: 3px;
 }
 
@@ -905,7 +905,7 @@
 }
 
 .relay span {
-  font-size: 12px;
+  font-size: 13px;
   line-height: 1.5;
   color: #858781;
   margin-top: 6px;
@@ -985,14 +985,14 @@
 }
 
 .photoRail small {
-  font-size: 9px;
+  font-size: 9.5px;
   font-weight: 600;
   letter-spacing: 0.15em;
   color: var(--accent);
 }
 
 .photoRail strong {
-  font-size: 13px;
+  font-size: 13.5px;
   margin-top: 5px;
 }
 
@@ -1034,7 +1034,7 @@
   align-items: center;
   gap: 30px;
   color: #82847d;
-  font-size: 10px;
+  font-size: 10.5px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
@@ -1290,7 +1290,7 @@
   .nav .navCta {
     min-height: 40px;
     padding: 0 15px;
-    font-size: 10px;
+    font-size: 11px;
     box-shadow: 0 7px 22px #0006;
   }
   .sectionLabel,
@@ -1298,7 +1298,7 @@
   .coachCopy > .sectionLabel,
   .memoriesCopy > .sectionLabel {
     margin-bottom: 14px;
-    font-size: 9px;
+    font-size: 9.5px;
     letter-spacing: 0.17em;
   }
   .hero {
@@ -1317,7 +1317,7 @@
     line-height: 0.91;
   }
   .heroCopy {
-    font-size: 13px;
+    font-size: 14px;
     line-height: 1.62;
     max-width: 34ch;
   }
@@ -1331,7 +1331,7 @@
     gap: 22px;
   }
   .textCta {
-    font-size: 11px;
+    font-size: 12px;
   }
   .heroTelemetry {
     right: 20px;
@@ -1343,7 +1343,7 @@
     height: 34px;
   }
   .heroTelemetry strong {
-    font-size: 14px;
+    font-size: 15px;
   }
   .intro {
     min-height: 100svh;
@@ -1380,14 +1380,14 @@
     height: 84px;
   }
   .scoreDial b {
-    font-size: 25px;
+    font-size: 26px;
   }
   .scoreDial small {
-    font-size: 7px;
+    font-size: 7.5px;
     margin-bottom: 2px;
   }
   .scoreMeta strong {
-    font-size: 14px;
+    font-size: 15px;
   }
   .badgeIcon {
     width: 34px;
@@ -1398,10 +1398,10 @@
   }
   .miniLabel {
     height: 14px;
-    font-size: 8px;
+    font-size: 8.5px;
   }
   .miniLabel strong {
-    font-size: 10px;
+    font-size: 10.5px;
   }
   .tierTrack {
     margin-top: 8px;
@@ -1428,14 +1428,14 @@
   .tier > small {
     top: 5px;
     left: 6px;
-    font-size: 7px;
+    font-size: 7.5px;
   }
   .tier > strong {
-    font-size: 8px;
+    font-size: 9px;
   }
   .tierCaption {
     margin-top: 8px;
-    font-size: 8px;
+    font-size: 9px;
     line-height: 1.35;
   }
   .intro .pillars {
@@ -1454,13 +1454,13 @@
   }
   .pillar h3 {
     margin: 0;
-    font-size: 14px;
+    font-size: 15px;
     line-height: 1.35;
   }
   .pillar p {
     margin: 0;
-    font-size: 11px;
-    line-height: 1.5;
+    font-size: 12px;
+    line-height: 1.55;
   }
   .featureStory {
     min-height: 100svh;
@@ -1471,7 +1471,7 @@
   }
   .featureCopy > p {
     margin-top: 16px;
-    font-size: 11.5px;
+    font-size: 12.5px;
     line-height: 1.65;
   }
   .scoreList {
@@ -1480,7 +1480,7 @@
   .scoreRow {
     grid-template-columns: 92px 1fr 24px;
     padding: 8px 0;
-    font-size: 10px;
+    font-size: 11px;
   }
   .featureVisual {
     width: 100%;
@@ -1495,7 +1495,7 @@
     padding: 9px 11px;
   }
   .featureVisual figcaption strong {
-    font-size: 10px;
+    font-size: 11px;
   }
   .coach {
     height: 100svh;
@@ -1510,13 +1510,13 @@
     max-width: calc(100vw - 40px);
   }
   .coachCopy > p {
-    font-size: 11.5px;
+    font-size: 12.5px;
     line-height: 1.65;
   }
   .coachCopy blockquote {
     margin-top: 24px;
     padding: 14px 16px;
-    font-size: 10.5px;
+    font-size: 12px;
     line-height: 1.6;
   }
   .roads {
@@ -1542,20 +1542,20 @@
     gap: 10px;
   }
   .roadBadge small {
-    font-size: 8px;
+    font-size: 8.5px;
   }
   .roadBadge strong {
-    font-size: 10.5px;
+    font-size: 11.5px;
   }
   .relay {
     gap: 6px;
     margin-top: 22px;
   }
   .relay strong {
-    font-size: 11px;
+    font-size: 12px;
   }
   .relay span {
-    font-size: 10px;
+    font-size: 11px;
     line-height: 1.45;
     margin-top: 3px;
   }
@@ -1571,7 +1571,7 @@
   }
   .memoriesCopy > p {
     margin-top: 16px;
-    font-size: 11.5px;
+    font-size: 12.5px;
     line-height: 1.65;
   }
   .photoRail {
@@ -1589,10 +1589,10 @@
     bottom: 11px;
   }
   .photoRail small {
-    font-size: 8px;
+    font-size: 8.5px;
   }
   .photoRail strong {
-    font-size: 10.5px;
+    font-size: 11.5px;
     margin-top: 3px;
   }
   .finalCta {
