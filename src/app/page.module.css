@@ -1,8 +1,11 @@
-/* Landing page.
+/* Landing page — a full-screen horizontal deck.
  *
  * Visual language follows the reference boards: dark base, lime accent, a
  * faint technical grid, floating cards with a hairline border and soft glow,
- * and a glowing route line as the connective motif.
+ * and a glowing route line as the connective motif. Every section is one
+ * 100svh slide (Deck.tsx does the snapping/auto-advance); the styles below
+ * are sized so each slide FITS ONE SCREEN — prefer svh-based clamps and
+ * height media queries over letting content grow.
  *
  * PERFORMANCE CONTRACT — this page must hold 60fps on a mid-range Android
  * phone and an integrated-graphics laptop:
@@ -12,15 +15,13 @@
  *  - No backdrop-filter. It is the single most expensive common CSS effect;
  *    the "glass" look here is a translucent background colour instead, which
  *    is visually equivalent on a dark ground and free.
- *  - `will-change` is scoped to elements that are ACTIVELY entering, and
- *    removed after (see .rise/.reveal). A permanent will-change pins a GPU
- *    layer per element and exhausts VRAM on low-end devices.
- *  - The only infinite animations are three small SVG circles and one dash
- *    offset. Everything else runs once and stops.
+ *  - Slide movement is native scroll + scroll-snap, never JS-per-frame.
+ *  - The only infinite animations are three small SVG circles, one dash
+ *    offset and the pothole halo. Everything else runs once and stops.
  */
 
 .page {
-  min-height: 100svh;
+  height: 100svh;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -85,7 +86,7 @@
   width: 100%;
   max-width: var(--maxw);
   margin: 0 auto;
-  padding: 30px 24px 0;
+  padding: 22px 24px 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -111,15 +112,28 @@
   color: var(--accent);
 }
 
-/* ---- Layout ------------------------------------------------------------- */
-.main {
-  flex: 1;
+/* ---- Slide scaffolding --------------------------------------------------- */
+.slideInner {
   width: 100%;
   max-width: var(--maxw);
-  margin: 0 auto;
-  padding: clamp(48px, 10vh, 104px) 24px 40px;
+  margin-inline: auto;
 }
 
+.sectionHead {
+  max-width: 640px;
+  margin: 0 auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.sectionHead .sectionSub {
+  margin: 0;
+}
+
+/* ---- Hero ---------------------------------------------------------------- */
 .hero {
   display: flex;
   flex-direction: column;
@@ -163,8 +177,8 @@
 }
 
 .title {
-  margin: 28px 0 0;
-  font-size: clamp(2.7rem, 7.6vw, 5.2rem);
+  margin: 18px 0 0;
+  font-size: clamp(2.1rem, 4.6vw, 3.7rem);
   font-weight: 700;
   line-height: 1.04;
   letter-spacing: -0.04em;
@@ -175,36 +189,17 @@
 }
 
 .subtitle {
-  margin: 24px 0 0;
-  font-size: clamp(1rem, 2.2vw, 1.16rem);
+  margin: 16px 0 0;
+  font-size: clamp(0.95rem, 1.7vw, 1.08rem);
   font-weight: 300;
-  line-height: 1.7;
+  line-height: 1.65;
   color: var(--text-secondary);
   max-width: 56ch;
 }
 
-.tagline {
-  margin: 30px 0 0;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  font-size: 12.5px;
-  font-weight: 500;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--text-tertiary);
-}
-
-.dot {
-  width: 3px;
-  height: 3px;
-  border-radius: 50%;
-  background: var(--accent);
-}
-
 /* ---- Route -------------------------------------------------------------- */
 .routeWrap {
-  margin: clamp(28px, 5vh, 52px) 0 0;
+  margin: clamp(12px, 3svh, 28px) 0 0;
   width: 100%;
   display: flex;
   justify-content: center;
@@ -212,27 +207,30 @@
 
 .route {
   width: 100%;
-  max-width: 1000px;
+  max-width: 860px;
+  max-height: clamp(96px, 18svh, 190px);
   height: auto;
 }
 
 /* ---- Cards -------------------------------------------------------------- */
 .cards {
-  margin: clamp(4px, 2vh, 20px) 0 0;
+  margin: clamp(8px, 2svh, 18px) 0 0;
+  width: 100%;
+  max-width: 860px;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
 }
 
 .card {
-  padding: 20px;
+  padding: 16px;
   border-radius: var(--radius);
   border: 1px solid var(--divider);
   background: var(--surface);
   box-shadow: var(--card-shadow);
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
   /* Only the border/shadow transition on hover — both are cheap on a handful
      of cards, and hover never fires on the phones we care about. */
   transition: border-color 0.3s ease, transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
@@ -246,30 +244,48 @@
 .cardHead {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 4px;
+  text-align: left;
 }
 
 .cardLabel {
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 600;
   letter-spacing: -0.01em;
   color: var(--text-primary);
 }
 
 .cardHint {
-  font-size: 13px;
+  font-size: 12.5px;
   font-weight: 300;
   color: var(--text-tertiary);
 }
 
 .spark {
   width: 100%;
-  height: 38px;
+  height: 34px;
 }
 
-/* ---- Radar section ------------------------------------------------------ */
+/* ---- Section type -------------------------------------------------------- */
+.h2 {
+  margin: 0;
+  font-size: clamp(1.55rem, 3.4vw, 2.4rem);
+  font-weight: 700;
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+}
+
+.sectionSub {
+  margin: 14px 0 0;
+  font-size: clamp(0.92rem, 1.6vw, 1rem);
+  font-weight: 300;
+  line-height: 1.65;
+  color: var(--text-secondary);
+  max-width: 52ch;
+}
+
+/* ---- Radar slide --------------------------------------------------------- */
 .radarSection {
-  margin: clamp(72px, 12vh, 128px) 0 0;
   display: grid;
   grid-template-columns: 1fr 1fr;
   align-items: center;
@@ -280,150 +296,26 @@
   text-align: left;
 }
 
-.h2 {
-  margin: 0;
-  font-size: clamp(1.7rem, 4vw, 2.6rem);
-  font-weight: 700;
-  line-height: 1.12;
-  letter-spacing: -0.03em;
-}
-
-.sectionSub {
-  margin: 16px 0 0;
-  font-size: 1rem;
-  font-weight: 300;
-  line-height: 1.7;
-  color: var(--text-secondary);
-  max-width: 46ch;
-}
-
 .radar {
   width: 100%;
-  max-width: 440px;
+  max-width: min(420px, 68svh);
   height: auto;
   overflow: visible;
   justify-self: center;
 }
 
-/* ---- Footer ------------------------------------------------------------- */
-.footer {
-  width: 100%;
-  max-width: var(--maxw);
-  margin: 0 auto;
-  padding: 34px 24px 40px;
-  margin-top: clamp(56px, 9vh, 96px);
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px;
-  border-top: 1px solid var(--divider);
-  font-size: 13.5px;
-  color: var(--text-tertiary);
-}
-
-.footerLinks {
-  display: flex;
-  gap: 24px;
-}
-
-.footerLink {
-  color: var(--text-secondary);
-  transition: color 0.25s ease;
-}
-
-.footerLink:hover {
-  color: var(--accent);
-}
-
-/* ---- Entrances ---------------------------------------------------------- */
-/* One shared easing curve across the whole page. `backwards` holds the
-   from-state during the delay so nothing flashes at full opacity first. */
-.reveal {
-  animation: reveal 0.9s cubic-bezier(0.22, 1, 0.36, 1) backwards;
-  animation-delay: var(--delay, 0ms);
-}
-
-.rise {
-  animation: rise 1s cubic-bezier(0.22, 1, 0.36, 1) backwards;
-  animation-delay: var(--delay, 0ms);
-}
-
-@keyframes reveal {
-  from {
-    opacity: 0;
-    transform: translate3d(0, 20px, 0);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-@keyframes rise {
-  from {
-    opacity: 0;
-    transform: translate3d(0, 26px, 0) scale(0.985);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-/* ---- Scroll reveal ------------------------------------------------------ */
-/* Below-the-fold twin of .reveal: hidden until an ancestor (InView.tsx) flips
-   data-inview="true", then transitions on transform/opacity only. The hidden
-   state is gated on `scripting: enabled` so a no-JS visitor sees everything. */
-@media (scripting: enabled) {
-  .sr {
-    opacity: 0;
-    transform: translate3d(0, 24px, 0);
-  }
-}
-
-.sr {
-  transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
-    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
-  transition-delay: var(--delay, 0ms);
-}
-
-[data-inview="true"] .sr {
-  opacity: 1;
-  transform: none;
-}
-
-/* ---- Shared section scaffolding ----------------------------------------- */
-.section {
-  margin-top: clamp(88px, 13vh, 148px);
-}
-
-.sectionHead {
-  max-width: 640px;
-  margin: 0 auto;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 16px;
-}
-
-.sectionHead .sectionSub {
-  margin: 0;
-}
-
 /* ---- Moment timeline ----------------------------------------------------- */
 .momentCard {
-  margin-top: clamp(32px, 6vh, 52px);
-  padding: 22px 22px 24px;
+  margin-top: clamp(18px, 3.5svh, 36px);
+  padding: 18px 20px 20px;
   border-radius: var(--radius-lg);
   border: 1px solid var(--divider);
   background: var(--surface);
   box-shadow: var(--card-shadow);
   display: flex;
   flex-direction: column;
-  gap: 24px;
-  max-width: 860px;
+  gap: 18px;
+  max-width: 820px;
   margin-inline: auto;
 }
 
@@ -528,10 +420,10 @@
   border: 1px solid var(--divider);
   border-radius: var(--radius);
   background: var(--surface-muted);
-  padding: 18px 18px 14px;
+  padding: 14px 16px 12px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
 }
 
 .momentDetailHead {
@@ -560,38 +452,39 @@
 
 .momentDetailSub {
   margin: 0;
-  font-size: 13.5px;
+  font-size: 13px;
   font-weight: 300;
-  line-height: 1.65;
+  line-height: 1.6;
   color: var(--text-secondary);
   max-width: 60ch;
 }
 
 .decel {
   width: 100%;
-  height: 64px;
+  height: clamp(40px, 7svh, 60px);
   margin-top: 2px;
 }
 
-/* ---- Coach section ------------------------------------------------------- */
+/* ---- Coach slide ---------------------------------------------------------- */
 .coachSection {
   display: grid;
-  grid-template-columns: 0.85fr 1.15fr;
+  grid-template-columns: 0.8fr 1.2fr;
   align-items: center;
   gap: clamp(24px, 5vw, 64px);
 }
 
 .coachPhoto {
-  aspect-ratio: 3 / 4;
   width: 100%;
-  max-width: 420px;
+  max-width: 380px;
+  height: min(56svh, 460px);
   justify-self: center;
 }
 
 .coachCopy {
   display: flex;
   flex-direction: column;
-  gap: 26px;
+  gap: clamp(16px, 3svh, 26px);
+  text-align: left;
 }
 
 .coachCard {
@@ -599,10 +492,10 @@
   border-radius: var(--radius);
   background: var(--surface);
   box-shadow: var(--card-shadow);
-  padding: 22px;
+  padding: 18px 20px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 14px;
 }
 
 .coachCardLabel {
@@ -615,16 +508,16 @@
 
 .coachQuote {
   margin: 0;
-  font-size: 15.5px;
+  font-size: clamp(0.92rem, 1.6vw, 1rem);
   font-weight: 300;
-  line-height: 1.7;
+  line-height: 1.65;
   color: var(--text-primary);
 }
 
 .focusList {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
 }
 
 .focusRow {
@@ -654,7 +547,7 @@
   background: var(--accent);
 }
 
-/* ---- Photo cards --------------------------------------------------------- */
+/* ---- Photo cards ---------------------------------------------------------- */
 /* The reference boards' core trick: real road photography under a dark
    gradient, caption pinned to the shaded bottom edge. The shade guarantees
    caption legibility, so the caption colours are fixed white in both themes. */
@@ -691,7 +584,7 @@
 }
 
 .photoTitle {
-  font-size: 14.5px;
+  font-size: 14px;
   font-weight: 600;
   color: #fff;
 }
@@ -702,14 +595,14 @@
   color: rgba(255, 255, 255, 0.72);
 }
 
-/* ---- Mission ------------------------------------------------------------- */
+/* ---- Mission slide --------------------------------------------------------- */
 .mission {
   position: relative;
   overflow: hidden;
   border-radius: var(--radius-lg);
   border: 1px solid var(--divider);
   background: var(--surface-muted);
-  padding: clamp(40px, 7vw, 72px) clamp(20px, 5vw, 64px);
+  padding: clamp(22px, 4.5svh, 44px) clamp(20px, 4vw, 56px);
 }
 
 /* One static radial wash — painted once, never animated. */
@@ -727,89 +620,82 @@
 }
 
 .relayWrap {
-  margin-top: clamp(28px, 5vh, 48px);
+  margin-top: clamp(12px, 2.5svh, 24px);
   display: flex;
   justify-content: center;
 }
 
 .relay {
+  /* 3.22 aspect: capping width at 145svh caps the height at ~45svh. */
   width: 100%;
-  max-width: 800px;
+  max-width: min(640px, 145svh);
   height: auto;
 }
 
 .relaySteps {
-  margin-top: clamp(20px, 4vh, 36px);
+  margin-top: clamp(10px, 2svh, 20px);
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(216px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
 }
 
 .relayStep {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  padding: 18px;
+  gap: 6px;
+  padding: 14px 16px;
   border-radius: var(--radius);
   border: 1px solid var(--divider);
   background: var(--surface);
   box-shadow: var(--card-shadow);
+  text-align: left;
 }
 
 .relayIndex {
-  font-size: 12px;
+  font-size: 11.5px;
   font-weight: 600;
   letter-spacing: 0.16em;
   color: var(--accent);
 }
 
 .relayTitle {
-  font-size: 15.5px;
+  font-size: 14.5px;
   font-weight: 600;
   letter-spacing: -0.01em;
 }
 
 .relayBody {
-  font-size: 13.5px;
+  font-size: 13px;
   font-weight: 300;
-  line-height: 1.65;
+  line-height: 1.6;
   color: var(--text-secondary);
 }
 
-.missionLine {
-  margin: clamp(28px, 5vh, 44px) auto 0;
-  text-align: center;
-  font-size: clamp(1.05rem, 2.4vw, 1.3rem);
-  font-weight: 300;
-  line-height: 1.6;
-  color: var(--text-primary);
-  max-width: 44ch;
-}
-
-/* ---- Stories ------------------------------------------------------------- */
+/* ---- Stories slide ---------------------------------------------------------- */
 .storyGrid {
-  margin-top: clamp(32px, 6vh, 56px);
+  margin-top: clamp(18px, 3.5svh, 32px);
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 18px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  height: min(48svh, 400px);
 }
 
 .storyCard {
-  aspect-ratio: 4 / 5;
+  height: 100%;
 }
 
-/* ---- Manifesto ----------------------------------------------------------- */
+/* ---- Manifesto slide --------------------------------------------------------- */
 .manifesto {
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: 22px;
+  gap: clamp(14px, 2.8svh, 22px);
 }
 
 .manifestoLine {
   margin: 0;
-  font-size: clamp(2rem, 5.4vw, 3.4rem);
+  font-size: clamp(1.9rem, 4.8vw, 3.2rem);
   font-weight: 700;
   line-height: 1.08;
   letter-spacing: -0.035em;
@@ -817,7 +703,7 @@
 
 .manifestoBody {
   margin: 0;
-  font-size: 1.02rem;
+  font-size: clamp(0.95rem, 1.7vw, 1.02rem);
   font-weight: 300;
   line-height: 1.7;
   color: var(--text-secondary);
@@ -825,7 +711,7 @@
 }
 
 .manifestoCta {
-  margin-top: 6px;
+  margin-top: 4px;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -844,10 +730,89 @@
   opacity: 0.8;
 }
 
-/* ---- Responsive --------------------------------------------------------- */
+.slideFooter {
+  margin-top: clamp(14px, 3svh, 28px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 22px;
+  font-size: 13px;
+  color: var(--text-tertiary);
+}
+
+.footerLink {
+  color: var(--text-secondary);
+  transition: color 0.25s ease;
+}
+
+.footerLink:hover {
+  color: var(--accent);
+}
+
+/* ---- Entrances ---------------------------------------------------------- */
+/* One shared easing curve across the whole page. `backwards` holds the
+   from-state during the delay so nothing flashes at full opacity first. */
+.reveal {
+  animation: reveal 0.9s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+  animation-delay: var(--delay, 0ms);
+}
+
+.rise {
+  animation: rise 1s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+  animation-delay: var(--delay, 0ms);
+}
+
+@keyframes reveal {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 20px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 26px, 0) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ---- Slide reveal -------------------------------------------------------- */
+/* Twin of .reveal for slides 2+: hidden until the Deck flips
+   data-inview="true" on the slide, then transitions on transform/opacity
+   only. Hidden state is gated on `scripting: enabled` so a no-JS visitor
+   sees everything. */
+@media (scripting: enabled) {
+  .sr {
+    opacity: 0;
+    transform: translate3d(0, 24px, 0);
+  }
+}
+
+.sr {
+  transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--delay, 0ms);
+}
+
+[data-inview="true"] .sr {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---- Responsive: width --------------------------------------------------- */
 @media (max-width: 860px) {
   .radarSection {
     grid-template-columns: 1fr;
+    gap: 18px;
     text-align: center;
   }
   .radarCopy {
@@ -856,16 +821,18 @@
   .sectionSub {
     margin-inline: auto;
   }
+  .radar {
+    max-width: min(320px, 44svh);
+  }
   .coachSection {
     grid-template-columns: 1fr;
+    gap: 18px;
     text-align: center;
   }
-  /* Copy first, photo after — the argument sells the picture, not the
-     other way round. */
+  /* One screen means one focus: on narrow viewports the coach's words beat
+     the scenery. */
   .coachPhoto {
-    order: 2;
-    max-width: 520px;
-    aspect-ratio: 16 / 10;
+    display: none;
   }
   .coachCopy {
     align-items: center;
@@ -873,38 +840,100 @@
   .coachCard {
     text-align: left;
     width: 100%;
+    max-width: 560px;
   }
 }
 
-@media (max-width: 560px) {
+@media (max-width: 700px) {
   .grid {
     background-size: 44px 44px;
   }
-  .radar {
-    max-width: 320px;
+  .title {
+    font-size: clamp(1.9rem, 8vw, 2.4rem);
   }
-  .footer {
-    justify-content: center;
-    text-align: center;
+  .cards {
+    gap: 8px;
   }
-  /* The route curve is tuned for a wide viewport; on a phone it becomes a
-     thin squiggle, so give it more height rather than letting it flatten. */
-  .route {
-    min-height: 120px;
+  .card {
+    padding: 10px;
+    gap: 8px;
+  }
+  .cardHint {
+    display: none;
+  }
+  .cardLabel {
+    font-size: 12px;
   }
   .momentTime {
     font-size: 10px;
   }
   .momentName {
-    font-size: 11px;
+    font-size: 10.5px;
   }
   .momentRow {
     padding: 0;
   }
-  .relay {
-    min-height: 150px;
+  .momentDetailSub {
+    display: none;
   }
-  .storyCard {
-    aspect-ratio: 16 / 10;
+  .relaySteps {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .relayStep {
+    padding: 10px 14px;
+  }
+  /* Titles carry the story on a phone; the step bodies are the first thing
+     traded for fitting one screen. */
+  .relayBody {
+    display: none;
+  }
+  .mission {
+    padding: 18px 16px 20px;
+  }
+  .storyGrid {
+    gap: 8px;
+    height: min(38svh, 320px);
+  }
+  .photoTag {
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+  }
+  .photoTitle {
+    font-size: 12px;
+  }
+  .photoCaption {
+    display: none;
+  }
+}
+
+/* ---- Responsive: height -------------------------------------------------- */
+/* The deck's promise is "everything fits one screen" — on short viewports
+   drop the flourishes before anything essential. */
+@media (max-height: 760px) {
+  .routeWrap {
+    display: none;
+  }
+  .subtitle {
+    max-width: 48ch;
+  }
+}
+
+@media (max-height: 640px) {
+  .cards {
+    display: none;
+  }
+  .momentDetailSub {
+    display: none;
+  }
+  .decel {
+    display: none;
+  }
+  .relayBody {
+    display: none;
+  }
+  .sectionSub {
+    display: none;
   }
 }

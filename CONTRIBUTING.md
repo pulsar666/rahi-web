@@ -133,7 +133,31 @@ than the app's wordmark. Decide which is canonical before the full build.
 
 ---
 
-## 5. Performance contract
+## 5. The deck
+
+The landing page is a **full-screen horizontal deck**: every section is one
+100svh slide. `src/components/Deck.tsx` owns navigation — native scroll +
+CSS scroll-snap does the movement (no JS per frame), arrows at both ends,
+dots, arrow keys, and an 8s auto-advance that pauses on hover/focus, skips
+hidden tabs, and turns off entirely under `prefers-reduced-motion`.
+
+Slide reveals reuse the `data-inview` CSS system: the Deck flips the
+attribute on a slide the first time it becomes current. Two rules to keep:
+
+- **Everything must fit one screen.** Size with svh-based clamps; on short
+  viewports the height media queries at the bottom of `page.module.css` drop
+  flourishes (route, spark cards, step bodies) before anything essential.
+  Check new content at 1440×768 AND ~500×850 before shipping.
+- A CSS `transform` animation **overrides an SVG element's `transform`
+  attribute** — position SVG groups on an outer `<g>`, animate an inner one
+  (see `HazardRelay.Car`).
+
+Headless-Chrome note: `--virtual-time-budget` screenshots can miss
+IntersectionObserver reveals (a slide renders blank); use `--timeout=6000`
+wall-clock waits instead. Width also clamps at ~500px while saving the
+requested size, so a 390px capture looks right-clipped — tool artifact.
+
+## 6. Performance contract
 
 The brief was "pristine and very high quality" **and** "must run smoothly on
 normal phones and laptops". Those pull against each other, so the budget below
@@ -168,7 +192,7 @@ inline reference would silently resolve to nothing.
 
 ---
 
-## 6. The privacy page
+## 7. The privacy page
 
 `/privacy` is deliberately plain, animation-free and JS-light. It is the page
 Play reviewers and regulators open, and it must render instantly and completely
@@ -189,7 +213,7 @@ first open-testing release.
 
 ---
 
-## 7. Reference material & imagery
+## 8. Reference material & imagery
 
 42 concept boards live in `~/Downloads/rahi-website/`. Consistent language:
 

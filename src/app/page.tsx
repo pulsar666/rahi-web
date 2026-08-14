@@ -3,7 +3,7 @@ import { Wordmark } from "@/components/Wordmark";
 import { AxisRadar } from "@/components/AxisRadar";
 import { RouteLine } from "@/components/RouteLine";
 import { Sparkline } from "@/components/StatCard";
-import { InView } from "@/components/InView";
+import { Deck } from "@/components/Deck";
 import { HazardRelay } from "@/components/HazardRelay";
 
 /** Illustrative brand furniture — NOT fleet statistics. Nothing on this
@@ -96,17 +96,15 @@ export default function Home() {
       <header className={styles.header}>
         <Wordmark className={styles.logo} height={24} />
         <nav className={styles.headerNav}>
-          <a className={styles.headerLink} href="#mission">
-            Mission
-          </a>
           <a className={styles.headerLink} href="/privacy/">
             Privacy
           </a>
         </nav>
       </header>
 
-      <main className={styles.main}>
-        <section className={styles.hero}>
+      <Deck interval={8000}>
+        {/* ---- 1 · Hero ------------------------------------------------- */}
+        <div className={`${styles.slideInner} ${styles.hero}`}>
           <span
             className={`${styles.eyebrow} ${styles.reveal}`}
             style={{ "--delay": "60ms" } as React.CSSProperties}
@@ -133,46 +131,35 @@ export default function Home() {
             a heads-up when the road ahead turns rough.
           </p>
 
-          <div
-            className={`${styles.tagline} ${styles.reveal}`}
-            style={{ "--delay": "380ms" } as React.CSSProperties}
-          >
-            <span>Drive.</span>
-            <span className={styles.dot} />
-            <span>Score.</span>
-            <span className={styles.dot} />
-            <span>Improve.</span>
+          {/* The route is the connective tissue between the promise and the
+              proof — it draws itself, then the cards land on it. */}
+          <div className={styles.routeWrap} aria-hidden="true">
+            <RouteLine className={styles.route} />
           </div>
-        </section>
 
-        {/* The route is the connective tissue between the promise and the
-            proof — it draws itself, then the cards land on it. */}
-        <div className={styles.routeWrap} aria-hidden="true">
-          <RouteLine className={styles.route} />
+          <div className={styles.cards}>
+            {CARDS.map((card, i) => (
+              <article
+                key={card.label}
+                className={`${styles.card} ${styles.rise}`}
+                style={{ "--delay": `${900 + i * 130}ms` } as React.CSSProperties}
+              >
+                <div className={styles.cardHead}>
+                  <span className={styles.cardLabel}>{card.label}</span>
+                  <span className={styles.cardHint}>{card.hint}</span>
+                </div>
+                <Sparkline
+                  className={styles.spark}
+                  points={card.points}
+                  delay={1200 + i * 130}
+                />
+              </article>
+            ))}
+          </div>
         </div>
 
-        <section className={styles.cards}>
-          {CARDS.map((card, i) => (
-            <article
-              key={card.label}
-              className={`${styles.card} ${styles.rise}`}
-              style={{ "--delay": `${900 + i * 130}ms` } as React.CSSProperties}
-            >
-              <div className={styles.cardHead}>
-                <span className={styles.cardLabel}>{card.label}</span>
-                <span className={styles.cardHint}>{card.hint}</span>
-              </div>
-              <Sparkline
-                className={styles.spark}
-                points={card.points}
-                delay={1200 + i * 130}
-              />
-            </article>
-          ))}
-        </section>
-
-        {/* ---- It starts with a moment ---------------------------------- */}
-        <InView className={styles.section}>
+        {/* ---- 2 · It starts with a moment ------------------------------ */}
+        <div className={styles.slideInner}>
           <div className={`${styles.sectionHead} ${styles.sr}`}>
             <h2 className={styles.h2}>
               It starts with a <span className={styles.titleAccent}>moment</span>.
@@ -259,27 +246,25 @@ export default function Home() {
               </svg>
             </div>
           </div>
-        </InView>
+        </div>
 
-        {/* ---- Six axes -------------------------------------------------- */}
-        <InView>
-          <section className={styles.radarSection}>
-            <div className={`${styles.radarCopy} ${styles.sr}`}>
-              <h2 className={styles.h2}>
-                Six axes. <span className={styles.titleAccent}>One portrait.</span>
-              </h2>
-              <p className={styles.sectionSub}>
-                Every drive is scored across the six things that actually
-                separate a good driver from a lucky one — then shown back to
-                you as one shape you can watch change.
-              </p>
-            </div>
-            <AxisRadar className={styles.radar} />
-          </section>
-        </InView>
+        {/* ---- 3 · Six axes --------------------------------------------- */}
+        <div className={`${styles.slideInner} ${styles.radarSection}`}>
+          <div className={`${styles.radarCopy} ${styles.sr}`}>
+            <h2 className={styles.h2}>
+              Six axes. <span className={styles.titleAccent}>One portrait.</span>
+            </h2>
+            <p className={styles.sectionSub}>
+              Every drive is scored across the six things that actually
+              separate a good driver from a lucky one — then shown back to
+              you as one shape you can watch change.
+            </p>
+          </div>
+          <AxisRadar className={styles.radar} />
+        </div>
 
-        {/* ---- The coach ------------------------------------------------- */}
-        <InView className={`${styles.section} ${styles.coachSection}`}>
+        {/* ---- 4 · The coach -------------------------------------------- */}
+        <div className={`${styles.slideInner} ${styles.coachSection}`}>
           <figure
             className={`${styles.photoCard} ${styles.coachPhoto} ${styles.sr}`}
           >
@@ -345,11 +330,11 @@ export default function Home() {
               </div>
             </div>
           </div>
-        </InView>
+        </div>
 
-        {/* ---- The mission ----------------------------------------------- */}
-        <InView id="mission" className={styles.section}>
-          <section className={styles.mission}>
+        {/* ---- 5 · The mission ------------------------------------------ */}
+        <div className={styles.slideInner}>
+          <div className={styles.mission}>
             <div className={`${styles.sectionHead} ${styles.sr}`}>
               <span className={styles.eyebrow}>Why Rahi exists</span>
               <h2 className={styles.h2}>
@@ -386,19 +371,11 @@ export default function Home() {
                 </div>
               ))}
             </div>
+          </div>
+        </div>
 
-            <p
-              className={`${styles.missionLine} ${styles.sr}`}
-              style={{ "--delay": "700ms" } as React.CSSProperties}
-            >
-              Every drive you record leaves the road a little kinder than you
-              found it.
-            </p>
-          </section>
-        </InView>
-
-        {/* ---- Stories ---------------------------------------------------- */}
-        <InView className={styles.section}>
+        {/* ---- 6 · Stories ----------------------------------------------- */}
+        <div className={styles.slideInner}>
           <div className={`${styles.sectionHead} ${styles.sr}`}>
             <h2 className={styles.h2}>
               Every drive becomes a{" "}
@@ -434,53 +411,51 @@ export default function Home() {
               </figure>
             ))}
           </div>
-        </InView>
+        </div>
 
-        {/* ---- Manifesto -------------------------------------------------- */}
-        <InView className={styles.section}>
-          <section className={styles.manifesto}>
-            <h2 className={`${styles.manifestoLine} ${styles.sr}`}>
-              Drive for the one{" "}
-              <span className={styles.titleAccent}>behind you</span>.
-            </h2>
-            <p
-              className={`${styles.manifestoBody} ${styles.sr}`}
-              style={{ "--delay": "150ms" } as React.CSSProperties}
+        {/* ---- 7 · Manifesto ---------------------------------------------- */}
+        <div className={`${styles.slideInner} ${styles.manifesto}`}>
+          <h2 className={`${styles.manifestoLine} ${styles.sr}`}>
+            Drive for the one{" "}
+            <span className={styles.titleAccent}>behind you</span>.
+          </h2>
+          <p
+            className={`${styles.manifestoBody} ${styles.sr}`}
+            style={{ "--delay": "150ms" } as React.CSSProperties}
+          >
+            Built in India, for Indian roads. Rahi starts with one phone on
+            one dashboard — and grows into every driver quietly watching out
+            for every other.
+          </p>
+          <div
+            className={`${styles.manifestoCta} ${styles.sr}`}
+            style={{ "--delay": "300ms" } as React.CSSProperties}
+          >
+            <span className={styles.eyebrow}>
+              <span className={styles.pulse} />
+              Coming soon to Android
+            </span>
+            <a
+              className={styles.ctaLink}
+              href="mailto:rahaanirban91@gmail.com?subject=Rahi%20early%20access"
             >
-              Built in India, for Indian roads. Rahi starts with one phone on
-              one dashboard — and grows into every driver quietly watching out
-              for every other.
-            </p>
-            <div
-              className={`${styles.manifestoCta} ${styles.sr}`}
-              style={{ "--delay": "300ms" } as React.CSSProperties}
-            >
-              <span className={styles.eyebrow}>
-                <span className={styles.pulse} />
-                Coming soon to Android
-              </span>
-              <a
-                className={styles.ctaLink}
-                href="mailto:rahaanirban91@gmail.com?subject=Rahi%20early%20access"
-              >
-                Ask for early access →
-              </a>
-            </div>
-          </section>
-        </InView>
-      </main>
-
-      <footer className={styles.footer}>
-        <span>© {new Date().getFullYear()} Rahi</span>
-        <nav className={styles.footerLinks}>
-          <a className={styles.footerLink} href="/privacy/">
-            Privacy
-          </a>
-          <a className={styles.footerLink} href="mailto:rahaanirban91@gmail.com">
-            Contact
-          </a>
-        </nav>
-      </footer>
+              Ask for early access →
+            </a>
+          </div>
+          <div
+            className={`${styles.slideFooter} ${styles.sr}`}
+            style={{ "--delay": "420ms" } as React.CSSProperties}
+          >
+            <span>© {new Date().getFullYear()} Rahi</span>
+            <a className={styles.footerLink} href="/privacy/">
+              Privacy
+            </a>
+            <a className={styles.footerLink} href="mailto:rahaanirban91@gmail.com">
+              Contact
+            </a>
+          </div>
+        </div>
+      </Deck>
     </div>
   );
 }

@@ -1,0 +1,133 @@
+/* Full-screen horizontal deck.
+ *
+ * Movement is native scroll + scroll-snap — the compositor drives it, no JS
+ * per frame. Same performance contract as the rest of the page: nothing here
+ * animates layout properties; the dots transition background-color only and
+ * the arrows transition colours only.
+ */
+
+.deck {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+}
+
+.scroller {
+  display: flex;
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  overscroll-behavior-x: contain;
+  /* Arrows + swipe navigate; a scrollbar under a full-bleed deck is noise. */
+  scrollbar-width: none;
+}
+
+.scroller::-webkit-scrollbar {
+  display: none;
+}
+
+.scroller:focus-visible {
+  outline: none;
+}
+
+.slide {
+  flex: 0 0 100%;
+  min-width: 100%;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 8px clamp(64px, 7vw, 110px) 44px;
+}
+
+/* ---- Arrows -------------------------------------------------------------- */
+.arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 5;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 1px solid var(--divider);
+  background: color-mix(in srgb, var(--surface) 84%, transparent);
+  color: var(--text-secondary);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  padding: 0;
+  transition: border-color 0.25s ease, color 0.25s ease;
+}
+
+.arrow:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.arrowLeft {
+  left: 16px;
+}
+
+.arrowRight {
+  right: 16px;
+}
+
+/* ---- Dots ---------------------------------------------------------------- */
+.dots {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 5;
+  display: flex;
+  gap: 10px;
+}
+
+.dot,
+.dotActive {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  background: var(--divider);
+  transition: background-color 0.3s ease;
+}
+
+.dot:hover {
+  background: var(--text-tertiary);
+}
+
+.dotActive {
+  background: var(--accent);
+}
+
+/* ---- Small screens ------------------------------------------------------- */
+@media (max-width: 700px) {
+  .slide {
+    padding: 4px 20px 52px;
+  }
+  /* Keep the arrows out of the content's way: tuck them to the bottom
+     corners, beside the dots. */
+  .arrow {
+    top: auto;
+    bottom: 8px;
+    transform: none;
+    width: 40px;
+    height: 40px;
+  }
+  .arrowLeft {
+    left: 14px;
+  }
+  .arrowRight {
+    right: 14px;
+  }
+  .dots {
+    bottom: 22px;
+  }
+}
