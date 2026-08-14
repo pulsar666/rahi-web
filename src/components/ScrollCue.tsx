@@ -10,12 +10,19 @@ function sectionTargets() {
   );
 }
 
+/** How far short of a section top a scroll may land and still count as
+ *  "on" that section. Trackpads cancel smooth scrolls mid-flight (resting a
+ *  finger fires a tiny wheel event), zoom makes landings fractional — with a
+ *  tight tolerance the next press would re-target the top you are already
+ *  looking at and feel dead. */
+const NEAR = 48;
+
 /** Index of the section the viewport is currently in: the last one whose
- *  top is at or above the scroll position. */
+ *  top is at — or almost at (within NEAR) — the scroll position. */
 function indexAt(y: number, targets: HTMLElement[]) {
   let idx = 0;
   for (let i = 0; i < targets.length; i++) {
-    if (targets[i].offsetTop <= y + 8) idx = i;
+    if (targets[i].offsetTop <= y + NEAR) idx = i;
   }
   return idx;
 }
@@ -45,11 +52,12 @@ export function ScrollCue({ className }: { className?: string }) {
     const remaining =
       document.documentElement.scrollHeight - window.innerHeight - y;
 
-    // Clear the pending lock once the scroll has settled on its target.
+    // Clear the pending lock once the scroll has settled on (or near) its
+    // target — same tolerance as indexAt, for the same trackpad/zoom reasons.
     if (
       pendingRef.current !== null &&
       targets[pendingRef.current] &&
-      Math.abs(targets[pendingRef.current].offsetTop - y) < 4
+      Math.abs(targets[pendingRef.current].offsetTop - y) < NEAR
     ) {
       pendingRef.current = null;
     }
@@ -91,8 +99,8 @@ export function ScrollCue({ className }: { className?: string }) {
       if (direction === "down") {
         nextIdx = idx + 1;
       } else {
-        // Scrolled into the current section → its own top comes first.
-        nextIdx = y > targets[idx].offsetTop + 8 ? idx : idx - 1;
+        // Scrolled well into the current section → its own top comes first.
+        nextIdx = y > targets[idx].offsetTop + NEAR + 8 ? idx : idx - 1;
       }
     }
 
@@ -116,8 +124,11 @@ export function ScrollCue({ className }: { className?: string }) {
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
       if (event.metaKey || event.ctrlKey || event.altKey) return;
+      // Only form fields keep their native arrow behaviour. Buttons and
+      // links do NOT use vertical arrows — excluding them made arrow keys
+      // go dead after clicking the cue (focus stays on the button).
       const el = event.target as HTMLElement | null;
-      if (el && /^(INPUT|TEXTAREA|SELECT|BUTTON|A)$/.test(el.tagName)) return;
+      if (el && (/^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName) || el.isContentEditable)) return;
 
       if (event.key === "ArrowDown" || event.key === "PageDown") {
         event.preventDefault();
