@@ -190,6 +190,30 @@ svg {
   border-radius: 4px;
 }
 
+/* ---- Global keyframes ---------------------------------------------------
+   These are referenced from inline styles in SVG components (AxisRadar), so
+   they must NOT live in a CSS Module — modules mangle @keyframes names and the
+   inline reference would resolve to nothing. */
+@keyframes radarIn {
+  from {
+    transform: scale(0.55);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes dotIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 /* Respect a reduced-motion preference: the tour animates a lot, and
    vestibular disorders are triggered by exactly this kind of movement. */
 @media (prefers-reduced-motion: reduce) {

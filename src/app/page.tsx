@@ -1,16 +1,6 @@
 import styles from "./page.module.css";
-
-/** The app's six public axes (driving_signature.py). Fill values are
- *  illustrative brand furniture, NOT real fleet numbers — nothing on this
- *  placeholder should read as a published statistic. */
-const AXES = [
-  { name: "Cornering", fill: "78%" },
-  { name: "Acceleration", fill: "64%" },
-  { name: "Braking", fill: "83%" },
-  { name: "Composure", fill: "71%" },
-  { name: "Awareness", fill: "88%" },
-  { name: "Focus", fill: "76%" },
-];
+import { Wordmark } from "@/components/Wordmark";
+import { AxisRadar } from "@/components/AxisRadar";
 
 export default function Home() {
   return (
@@ -18,9 +8,7 @@ export default function Home() {
       <div className={styles.glow} aria-hidden="true" />
 
       <header className={styles.header}>
-        <span className={styles.wordmark}>
-          Rahi<span className={styles.wordmarkDot}>.</span>
-        </span>
+        <Wordmark className={styles.logo} height={26} />
         <a className={styles.headerLink} href="/privacy/">
           Privacy
         </a>
@@ -51,28 +39,13 @@ export default function Home() {
           heads-up when the road ahead turns rough.
         </p>
 
-        <ul className={styles.axes}>
-          {AXES.map((axis, i) => (
-            <li
-              key={axis.name}
-              className={`${styles.axis} ${styles.reveal}`}
-              style={{ "--delay": `${420 + i * 70}ms` } as React.CSSProperties}
-            >
-              <span className={styles.axisName}>{axis.name}</span>
-              <div className={styles.axisTrack}>
-                <div
-                  className={styles.axisFill}
-                  style={
-                    {
-                      "--fill": axis.fill,
-                      "--delay": `${560 + i * 70}ms`,
-                    } as React.CSSProperties
-                  }
-                />
-              </div>
-            </li>
-          ))}
-        </ul>
+        <div
+          className={`${styles.radarWrap} ${styles.reveal}`}
+          style={{ "--delay": "400ms" } as React.CSSProperties}
+        >
+          <AxisRadar className={styles.radar} />
+          <span className={styles.radarCaption}>Six axes. One portrait.</span>
+        </div>
       </main>
 
       <footer className={styles.footer}>

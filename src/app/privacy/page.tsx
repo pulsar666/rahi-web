@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import styles from "./privacy.module.css";
+import { Wordmark } from "@/components/Wordmark";
 
 export const metadata: Metadata = {
   title: "Privacy Policy",
@@ -24,8 +25,9 @@ export default function Privacy() {
   return (
     <div className={styles.wrap}>
       <header className={styles.header}>
-        <a className={styles.back} href="/">
-          ← Rahi
+        <a className={styles.back} href="/" aria-label="Back to Rahi home">
+          <span aria-hidden="true">←</span>
+          <Wordmark height={20} />
         </a>
       </header>
 
