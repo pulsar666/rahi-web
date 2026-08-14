@@ -11,34 +11,44 @@
  * explicitly (data-theme on <html>).
  */
 
-/* ---- Sora: the app's typeface, self-hosted (no external CDN) ------------- */
+/* ---- Sora: the app's typeface, self-hosted (no external CDN) -------------
+   WOFF2 first (23KB/weight vs 57KB for the TTF — 115KB total instead of 300KB,
+   which is the difference between a fast and a slow first paint on a 4G phone).
+   The TTF stays as a fallback for anything that somehow lacks WOFF2 support.
+   `font-display: swap` renders system text immediately rather than blocking on
+   the font — never change it to `block`. */
 @font-face {
   font-family: "Sora";
-  src: url("/fonts/sora-light.ttf") format("truetype");
+  src: url("/fonts/sora-light.woff2") format("woff2"),
+    url("/fonts/sora-light.ttf") format("truetype");
   font-weight: 300;
   font-display: swap;
 }
 @font-face {
   font-family: "Sora";
-  src: url("/fonts/sora-regular.ttf") format("truetype");
+  src: url("/fonts/sora-regular.woff2") format("woff2"),
+    url("/fonts/sora-regular.ttf") format("truetype");
   font-weight: 400;
   font-display: swap;
 }
 @font-face {
   font-family: "Sora";
-  src: url("/fonts/sora-medium.ttf") format("truetype");
+  src: url("/fonts/sora-medium.woff2") format("woff2"),
+    url("/fonts/sora-medium.ttf") format("truetype");
   font-weight: 500;
   font-display: swap;
 }
 @font-face {
   font-family: "Sora";
-  src: url("/fonts/sora-semibold.ttf") format("truetype");
+  src: url("/fonts/sora-semibold.woff2") format("woff2"),
+    url("/fonts/sora-semibold.ttf") format("truetype");
   font-weight: 600;
   font-display: swap;
 }
 @font-face {
   font-family: "Sora";
-  src: url("/fonts/sora-bold.ttf") format("truetype");
+  src: url("/fonts/sora-bold.woff2") format("woff2"),
+    url("/fonts/sora-bold.ttf") format("truetype");
   font-weight: 700;
   font-display: swap;
 }
@@ -191,9 +201,16 @@ svg {
 }
 
 /* ---- Global keyframes ---------------------------------------------------
-   These are referenced from inline styles in SVG components (AxisRadar), so
-   they must NOT live in a CSS Module — modules mangle @keyframes names and the
-   inline reference would resolve to nothing. */
+   Referenced from inline styles in SVG components, so they must NOT live in a
+   CSS Module — modules mangle @keyframes names and inline references would
+   resolve to nothing.
+
+   EVERY animation below drives transform / opacity / stroke-dashoffset only.
+   None touch layout (width, height, top, margin), so all of them run on the
+   compositor and hold 60fps on a mid-range phone. Easing is a single shared
+   curve — cubic-bezier(0.22, 1, 0.36, 1), a decelerating "expo-out" — so the
+   whole page feels like one hand made it. */
+
 @keyframes radarIn {
   from {
     transform: scale(0.55);
@@ -208,10 +225,96 @@ svg {
 @keyframes dotIn {
   from {
     opacity: 0;
+    transform: scale(0.4);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
   }
   to {
     opacity: 1;
   }
+}
+
+/* Route + sparkline "draw themselves". pathLength=1 is set on the elements so
+   one dashoffset value works regardless of the path's real length. */
+@keyframes drawLine {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* The dashed centre-line slides along the road. */
+@keyframes dashShift {
+  from {
+    stroke-dashoffset: 0;
+  }
+  to {
+    stroke-dashoffset: -36;
+  }
+}
+
+/* Waypoint halo: expands and fades, then repeats. scale() only — animating r
+   would invalidate geometry every frame. */
+@keyframes pinHalo {
+  0% {
+    transform: scale(0.5);
+    opacity: 0.9;
+  }
+  70%,
+  100% {
+    transform: scale(3.2);
+    opacity: 0;
+  }
+}
+
+.routeDraw {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  /* pathLength normalises every path to 1 unit long. */
+  animation: drawLine 2.4s cubic-bezier(0.33, 0.9, 0.32, 1) 0.25s forwards;
+}
+
+.routeDash {
+  animation: fadeIn 0.8s ease-out 2.1s backwards,
+    dashShift 1.6s linear 2.1s infinite;
+}
+
+.routePin {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: dotIn 0.6s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+
+.routePinHalo {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: pinHalo 2.8s cubic-bezier(0.22, 1, 0.36, 1) infinite backwards;
+}
+
+.sparkDraw {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: drawLine 1.1s cubic-bezier(0.33, 0.9, 0.32, 1) backwards;
+}
+
+.sparkArea {
+  animation: fadeIn 0.9s ease-out backwards;
+}
+
+.sparkDot {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: dotIn 0.45s cubic-bezier(0.22, 1, 0.36, 1) backwards;
 }
 
 /* Respect a reduced-motion preference: the tour animates a lot, and

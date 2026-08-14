@@ -1,7 +1,23 @@
-/* Placeholder landing page.
-   Layout is deliberately simple — this is scaffolding for the animated tour,
-   not the tour itself. What it DOES establish: the palette, Sora, the card
-   idiom, and the entrance-animation timing the real slides will inherit. */
+/* Landing page.
+ *
+ * Visual language follows the reference boards: dark base, lime accent, a
+ * faint technical grid, floating cards with a hairline border and soft glow,
+ * and a glowing route line as the connective motif.
+ *
+ * PERFORMANCE CONTRACT — this page must hold 60fps on a mid-range Android
+ * phone and an integrated-graphics laptop:
+ *  - Animations drive transform / opacity / stroke-dashoffset ONLY. Nothing
+ *    animates width, height, top, margin or box-shadow (all force layout or
+ *    paint every frame).
+ *  - No backdrop-filter. It is the single most expensive common CSS effect;
+ *    the "glass" look here is a translucent background colour instead, which
+ *    is visually equivalent on a dark ground and free.
+ *  - `will-change` is scoped to elements that are ACTIVELY entering, and
+ *    removed after (see .rise/.reveal). A permanent will-change pins a GPU
+ *    layer per element and exhausts VRAM on low-end devices.
+ *  - The only infinite animations are three small SVG circles and one dash
+ *    offset. Everything else runs once and stops.
+ */
 
 .page {
   min-height: 100svh;
@@ -9,10 +25,27 @@
   flex-direction: column;
   position: relative;
   isolation: isolate;
+  overflow: hidden;
 }
 
-/* Ambient accent wash behind the hero. Sits under everything (z-index -1) and
-   is pointer-transparent so it can never eat a click. */
+/* ---- Ambient background ------------------------------------------------- */
+
+/* Faint technical grid, straight from the reference boards. A CSS gradient
+   costs one paint at load and never repaints — no image request. */
+.grid {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  background-image:
+    linear-gradient(var(--divider) 1px, transparent 1px),
+    linear-gradient(90deg, var(--divider) 1px, transparent 1px);
+  background-size: 64px 64px;
+  opacity: 0.35;
+  /* Fade the grid out toward the bottom so it never fights the content. */
+  mask-image: radial-gradient(ellipse 90% 60% at 50% 0%, #000 30%, transparent 78%);
+}
+
 .glow {
   position: absolute;
   inset: 0;
@@ -24,28 +57,25 @@
 .glow::before {
   content: "";
   position: absolute;
-  top: -30vh;
+  top: -38vh;
   left: 50%;
-  width: min(120vw, 1000px);
-  height: min(120vw, 1000px);
-  transform: translateX(-50%);
-  background: radial-gradient(
-    circle,
-    var(--accent-muted) 0%,
-    transparent 62%
-  );
-  opacity: 0.9;
-  animation: breathe 9s ease-in-out infinite;
+  width: min(130vw, 1100px);
+  height: min(130vw, 1100px);
+  margin-left: calc(min(130vw, 1100px) / -2);
+  background: radial-gradient(circle, var(--accent-muted) 0%, transparent 62%);
+  opacity: 0.85;
+  animation: breathe 11s ease-in-out infinite;
 }
 
+/* translate/scale only — no width or left animation. */
 @keyframes breathe {
   0%,
   100% {
-    transform: translateX(-50%) scale(1);
-    opacity: 0.75;
+    transform: scale(1);
+    opacity: 0.7;
   }
   50% {
-    transform: translateX(-50%) scale(1.12);
+    transform: scale(1.1);
     opacity: 1;
   }
 }
@@ -55,13 +85,12 @@
   width: 100%;
   max-width: var(--maxw);
   margin: 0 auto;
-  padding: 28px 24px 0;
+  padding: 30px 24px 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
-/* The wordmark inherits currentColor, so it flips with the palette. */
 .logo {
   color: var(--text-primary);
 }
@@ -69,20 +98,23 @@
 .headerLink {
   font-size: 14px;
   color: var(--text-secondary);
-  transition: color 0.2s ease;
+  transition: color 0.25s ease;
 }
 
 .headerLink:hover {
-  color: var(--text-primary);
+  color: var(--accent);
 }
 
-/* ---- Hero --------------------------------------------------------------- */
+/* ---- Layout ------------------------------------------------------------- */
 .main {
   flex: 1;
   width: 100%;
   max-width: var(--maxw);
   margin: 0 auto;
-  padding: clamp(56px, 12vh, 128px) 24px 80px;
+  padding: clamp(48px, 10vh, 104px) 24px 40px;
+}
+
+.hero {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -93,45 +125,43 @@
   display: inline-flex;
   align-items: center;
   gap: 9px;
-  padding: 7px 15px;
+  padding: 7px 16px;
   border-radius: 999px;
-  border: var(--card-border);
+  border: 1px solid var(--accent-muted);
   background: var(--surface);
-  box-shadow: var(--card-shadow);
-  font-size: 12.5px;
+  font-size: 12px;
   font-weight: 500;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--text-secondary);
 }
 
 .pulse {
-  width: 7px;
-  height: 7px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
   background: var(--accent);
-  animation: pulse 2.4s ease-in-out infinite;
+  animation: pulse 2.6s ease-in-out infinite;
 }
 
 @keyframes pulse {
   0%,
   100% {
     opacity: 1;
-    box-shadow: 0 0 0 0 var(--accent-muted);
+    transform: scale(1);
   }
   50% {
-    opacity: 0.65;
-    box-shadow: 0 0 0 7px transparent;
+    opacity: 0.45;
+    transform: scale(0.82);
   }
 }
 
 .title {
-  margin: 26px 0 0;
-  font-size: clamp(2.6rem, 8vw, 5rem);
+  margin: 28px 0 0;
+  font-size: clamp(2.7rem, 7.6vw, 5.2rem);
   font-weight: 700;
-  line-height: 1.06;
-  letter-spacing: -0.035em;
-  max-width: 15ch;
+  line-height: 1.04;
+  letter-spacing: -0.04em;
 }
 
 .titleAccent {
@@ -139,48 +169,143 @@
 }
 
 .subtitle {
-  margin: 22px 0 0;
-  font-size: clamp(1rem, 2.4vw, 1.2rem);
+  margin: 24px 0 0;
+  font-size: clamp(1rem, 2.2vw, 1.16rem);
   font-weight: 300;
-  line-height: 1.65;
+  line-height: 1.7;
   color: var(--text-secondary);
-  max-width: 54ch;
+  max-width: 56ch;
 }
 
-/* ---- Six axes (radar) --------------------------------------------------- */
-.radarWrap {
-  margin: 52px 0 0;
+.tagline {
+  margin: 30px 0 0;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 12.5px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
+.dot {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+/* ---- Route -------------------------------------------------------------- */
+.routeWrap {
+  margin: clamp(28px, 5vh, 52px) 0 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.route {
+  width: 100%;
+  max-width: 1000px;
+  height: auto;
+}
+
+/* ---- Cards -------------------------------------------------------------- */
+.cards {
+  margin: clamp(4px, 2vh, 20px) 0 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 16px;
+}
+
+.card {
+  padding: 20px;
+  border-radius: var(--radius);
+  border: 1px solid var(--divider);
+  background: var(--surface);
+  box-shadow: var(--card-shadow);
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 18px;
+  gap: 16px;
+  /* Only the border/shadow transition on hover — both are cheap on a handful
+     of cards, and hover never fires on the phones we care about. */
+  transition: border-color 0.3s ease, transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.card:hover {
+  border-color: var(--accent-muted);
+  transform: translateY(-3px);
+}
+
+.cardHead {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.cardLabel {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+}
+
+.cardHint {
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--text-tertiary);
+}
+
+.spark {
   width: 100%;
+  height: 38px;
+}
+
+/* ---- Radar section ------------------------------------------------------ */
+.radarSection {
+  margin: clamp(72px, 12vh, 128px) 0 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: clamp(24px, 5vw, 64px);
+}
+
+.radarCopy {
+  text-align: left;
+}
+
+.h2 {
+  margin: 0;
+  font-size: clamp(1.7rem, 4vw, 2.6rem);
+  font-weight: 700;
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+}
+
+.sectionSub {
+  margin: 16px 0 0;
+  font-size: 1rem;
+  font-weight: 300;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  max-width: 46ch;
 }
 
 .radar {
   width: 100%;
-  max-width: 420px;
+  max-width: 440px;
   height: auto;
   overflow: visible;
+  justify-self: center;
 }
-
-.radarCaption {
-  font-size: 13px;
-  font-weight: 400;
-  letter-spacing: 0.04em;
-  color: var(--text-tertiary);
-}
-
-/* radarIn / dotIn are defined in globals.css, NOT here — CSS Modules mangle
-   @keyframes names, and AxisRadar references them from inline styles where
-   the mangled name is not available. */
 
 /* ---- Footer ------------------------------------------------------------- */
 .footer {
   width: 100%;
   max-width: var(--maxw);
   margin: 0 auto;
-  padding: 30px 24px 40px;
+  padding: 34px 24px 40px;
+  margin-top: clamp(56px, 9vh, 96px);
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -193,28 +318,35 @@
 
 .footerLinks {
   display: flex;
-  gap: 22px;
+  gap: 24px;
 }
 
 .footerLink {
   color: var(--text-secondary);
-  transition: color 0.2s ease;
+  transition: color 0.25s ease;
 }
 
 .footerLink:hover {
   color: var(--accent);
 }
 
-/* ---- Shared entrance ---------------------------------------------------- */
+/* ---- Entrances ---------------------------------------------------------- */
+/* One shared easing curve across the whole page. `backwards` holds the
+   from-state during the delay so nothing flashes at full opacity first. */
 .reveal {
-  animation: reveal 0.85s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+  animation: reveal 0.9s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+  animation-delay: var(--delay, 0ms);
+}
+
+.rise {
+  animation: rise 1s cubic-bezier(0.22, 1, 0.36, 1) backwards;
   animation-delay: var(--delay, 0ms);
 }
 
 @keyframes reveal {
   from {
     opacity: 0;
-    transform: translateY(18px);
+    transform: translate3d(0, 20px, 0);
   }
   to {
     opacity: 1;
@@ -222,14 +354,45 @@
   }
 }
 
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 26px, 0) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ---- Responsive --------------------------------------------------------- */
+@media (max-width: 860px) {
+  .radarSection {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+  .radarCopy {
+    text-align: center;
+  }
+  .sectionSub {
+    margin-inline: auto;
+  }
+}
+
 @media (max-width: 560px) {
-  /* The radar's labels sit outside its viewBox; give them room by letting the
-     SVG shrink before the text starts colliding. */
+  .grid {
+    background-size: 44px 44px;
+  }
   .radar {
-    max-width: 330px;
+    max-width: 320px;
   }
   .footer {
     justify-content: center;
     text-align: center;
+  }
+  /* The route curve is tuned for a wide viewport; on a phone it becomes a
+     thin squiggle, so give it more height rather than letting it flatten. */
+  .route {
+    min-height: 120px;
   }
 }

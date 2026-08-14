@@ -45,6 +45,26 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        {/* Preload only the two weights above the fold (700 for the headline,
+            300 for body copy). Preloading all five would compete with the
+            page's own CSS/JS for bandwidth on a slow connection and make the
+            first paint LATER, not sooner. */}
+        <link
+          rel="preload"
+          href="/fonts/sora-bold.woff2"
+          as="font"
+          type="font/woff2"
+          crossOrigin="anonymous"
+        />
+        <link
+          rel="preload"
+          href="/fonts/sora-light.woff2"
+          as="font"
+          type="font/woff2"
+          crossOrigin="anonymous"
+        />
+      </head>
       <body>{children}</body>
     </html>
   );
