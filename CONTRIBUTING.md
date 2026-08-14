@@ -133,29 +133,31 @@ than the app's wordmark. Decide which is canonical before the full build.
 
 ---
 
-## 5. The deck
+## 5. The page
 
-The landing page is a **full-screen horizontal deck**: every section is one
-100svh slide. `src/components/Deck.tsx` owns navigation — native scroll +
-CSS scroll-snap does the movement (no JS per frame), arrows at both ends,
-dots, arrow keys, and an 8s auto-advance that pauses on hover/focus, skips
-hidden tabs, and turns off entirely under `prefers-reduced-motion`.
+The landing page is a **vertical editorial scroll**: full-bleed photography
+sections with copy carved out of the shade, one shared horizontal grid
+(`--pad`), and a floating section-by-section scroll cue (`ScrollCue.tsx`).
+It replaced the earlier horizontal deck (`Deck.tsx` is retired but kept in
+`src/components/` for reference).
 
-Slide reveals reuse the `data-inview` CSS system: the Deck flips the
-attribute on a slide the first time it becomes current. Two rules to keep:
+`page.module.css` is ONE consolidated stylesheet with design tokens on
+`.page` (`--accent`, `--line`, `--ink-*`, `--pad`, `--gold`). Rules to keep:
 
-- **Everything must fit one screen.** Size with svh-based clamps; on short
-  viewports the height media queries at the bottom of `page.module.css` drop
-  flourishes (route, spark cards, step bodies) before anything essential.
-  Check new content at 1440×768 AND ~500×850 before shipping.
-- A CSS `transform` animation **overrides an SVG element's `transform`
-  attribute** — position SVG groups on an outer `<g>`, animate an inner one
-  (see `HazardRelay.Car`).
+- **Never stack override passes.** Edit the rule in place; the file has been
+  flattened once already and layered passes are how misalignment creeps in.
+- **Type floors:** 9px minimum on desktop, 8px on phones.
+- The tier metals (bronze/silver/gold/diamond) are the only non-brand
+  colours, and only inside the rank graphic.
+- On phones (portrait media block) every section is tuned to fit one
+  screen — check 1440×900 AND ~500×850 before shipping.
 
-Headless-Chrome note: `--virtual-time-budget` screenshots can miss
-IntersectionObserver reveals (a slide renders blank); use `--timeout=6000`
-wall-clock waits instead. Width also clamps at ~500px while saving the
-requested size, so a 390px capture looks right-clipped — tool artifact.
+Headless-Chrome notes: `--virtual-time-budget` screenshots can miss
+JS-driven state (use `--timeout=6000` wall-clock waits); window width clamps
+at ~500px while saving the requested size, so a 390px capture looks
+right-clipped — tool artifact. To screenshot one section, inject
+`main>section{display:none!important}main>section:nth-of-type(N){display:flex!important}`
+into a copy of `out/index.html`.
 
 ## 6. Performance contract
 
