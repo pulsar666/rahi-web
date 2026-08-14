@@ -1,0 +1,265 @@
+/* Placeholder landing page.
+   Layout is deliberately simple — this is scaffolding for the animated tour,
+   not the tour itself. What it DOES establish: the palette, Sora, the card
+   idiom, and the entrance-animation timing the real slides will inherit. */
+
+.page {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  isolation: isolate;
+}
+
+/* Ambient accent wash behind the hero. Sits under everything (z-index -1) and
+   is pointer-transparent so it can never eat a click. */
+.glow {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.glow::before {
+  content: "";
+  position: absolute;
+  top: -30vh;
+  left: 50%;
+  width: min(120vw, 1000px);
+  height: min(120vw, 1000px);
+  transform: translateX(-50%);
+  background: radial-gradient(
+    circle,
+    var(--accent-muted) 0%,
+    transparent 62%
+  );
+  opacity: 0.9;
+  animation: breathe 9s ease-in-out infinite;
+}
+
+@keyframes breathe {
+  0%,
+  100% {
+    transform: translateX(-50%) scale(1);
+    opacity: 0.75;
+  }
+  50% {
+    transform: translateX(-50%) scale(1.12);
+    opacity: 1;
+  }
+}
+
+/* ---- Header ------------------------------------------------------------- */
+.header {
+  width: 100%;
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 28px 24px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.wordmark {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.wordmarkDot {
+  color: var(--accent);
+}
+
+.headerLink {
+  font-size: 14px;
+  color: var(--text-secondary);
+  transition: color 0.2s ease;
+}
+
+.headerLink:hover {
+  color: var(--text-primary);
+}
+
+/* ---- Hero --------------------------------------------------------------- */
+.main {
+  flex: 1;
+  width: 100%;
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: clamp(56px, 12vh, 128px) 24px 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 7px 15px;
+  border-radius: 999px;
+  border: var(--card-border);
+  background: var(--surface);
+  box-shadow: var(--card-shadow);
+  font-size: 12.5px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.pulse {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+    box-shadow: 0 0 0 0 var(--accent-muted);
+  }
+  50% {
+    opacity: 0.65;
+    box-shadow: 0 0 0 7px transparent;
+  }
+}
+
+.title {
+  margin: 26px 0 0;
+  font-size: clamp(2.6rem, 8vw, 5rem);
+  font-weight: 700;
+  line-height: 1.06;
+  letter-spacing: -0.035em;
+  max-width: 15ch;
+}
+
+.titleAccent {
+  color: var(--accent);
+}
+
+.subtitle {
+  margin: 22px 0 0;
+  font-size: clamp(1rem, 2.4vw, 1.2rem);
+  font-weight: 300;
+  line-height: 1.65;
+  color: var(--text-secondary);
+  max-width: 54ch;
+}
+
+/* ---- Six axes ----------------------------------------------------------- */
+.axes {
+  margin: 56px 0 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(148px, 1fr));
+  gap: 12px;
+  width: 100%;
+  max-width: 760px;
+}
+
+.axis {
+  padding: 18px 14px;
+  border-radius: var(--radius);
+  border: var(--card-border);
+  background: var(--surface);
+  box-shadow: var(--card-shadow);
+  text-align: left;
+}
+
+.axisName {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  letter-spacing: 0.03em;
+}
+
+.axisTrack {
+  margin-top: 11px;
+  height: 5px;
+  border-radius: 999px;
+  background: var(--surface-muted);
+  overflow: hidden;
+}
+
+/* Width is handed in per-axis as --fill so one rule drives all six bars. */
+.axisFill {
+  height: 100%;
+  width: var(--fill);
+  border-radius: 999px;
+  background: var(--accent);
+  transform-origin: left center;
+  animation: fill 1.1s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+  animation-delay: var(--delay);
+}
+
+@keyframes fill {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* ---- Footer ------------------------------------------------------------- */
+.footer {
+  width: 100%;
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 30px 24px 40px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  border-top: 1px solid var(--divider);
+  font-size: 13.5px;
+  color: var(--text-tertiary);
+}
+
+.footerLinks {
+  display: flex;
+  gap: 22px;
+}
+
+.footerLink {
+  color: var(--text-secondary);
+  transition: color 0.2s ease;
+}
+
+.footerLink:hover {
+  color: var(--accent);
+}
+
+/* ---- Shared entrance ---------------------------------------------------- */
+.reveal {
+  animation: reveal 0.85s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+  animation-delay: var(--delay, 0ms);
+}
+
+@keyframes reveal {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (max-width: 560px) {
+  .axes {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .footer {
+    justify-content: center;
+    text-align: center;
+  }
+}

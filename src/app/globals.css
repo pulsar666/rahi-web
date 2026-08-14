@@ -1,0 +1,204 @@
+/*
+ * Rahi web design tokens.
+ *
+ * These are the SAME values as the Android app's RahiPalette
+ * (app-rahi/.../ui/theme/Color.kt) — dark = lime on pure black, light = warm
+ * off-white + burnt orange. If the app's palette moves, move these together;
+ * a drifting brand reads as two different products.
+ *
+ * Theme resolution mirrors the app: dark is the original brand and the
+ * default here, but the viewer's OS preference wins unless they pick
+ * explicitly (data-theme on <html>).
+ */
+
+/* ---- Sora: the app's typeface, self-hosted (no external CDN) ------------- */
+@font-face {
+  font-family: "Sora";
+  src: url("/fonts/sora-light.ttf") format("truetype");
+  font-weight: 300;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Sora";
+  src: url("/fonts/sora-regular.ttf") format("truetype");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Sora";
+  src: url("/fonts/sora-medium.ttf") format("truetype");
+  font-weight: 500;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Sora";
+  src: url("/fonts/sora-semibold.ttf") format("truetype");
+  font-weight: 600;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Sora";
+  src: url("/fonts/sora-bold.ttf") format("truetype");
+  font-weight: 700;
+  font-display: swap;
+}
+
+/* ---- Dark palette (default / original brand) ---------------------------- */
+:root {
+  --bg: #000000;
+  --surface: #161616;
+  --surface-elevated: #1e1e1e;
+  --surface-muted: #0e0e0e;
+
+  --accent: #7ee640;
+  --accent-muted: rgba(126, 230, 64, 0.2);
+  --on-accent: #0a1a00;
+
+  --good: #7ee640;
+  --improve: #f5b642;
+  --risk: #e55c5c;
+  --neutral: #9ca3af;
+
+  --text-primary: #ffffff;
+  --text-secondary: #9ca3af;
+  --text-tertiary: #6b6b6b;
+
+  --divider: #2a2a2a;
+
+  --chart-speed: #5dbaff;
+
+  --radius: 18px;
+  --radius-lg: 26px;
+  --maxw: 1120px;
+
+  /* Elevation reads as a hairline in dark, a soft shadow in light. */
+  --card-border: 1px solid var(--divider);
+  --card-shadow: none;
+
+  color-scheme: dark;
+}
+
+/* Light palette — applied when the viewer explicitly chooses light... */
+:root[data-theme="light"] {
+  --bg: #f8f8f6;
+  --surface: #ffffff;
+  --surface-elevated: #ffffff;
+  --surface-muted: #ececea;
+
+  --accent: #e8742c;
+  --accent-muted: rgba(232, 116, 44, 0.13);
+  --on-accent: #ffffff;
+
+  --good: #2e9e22;
+  --improve: #ce8a12;
+  --risk: #d23b3b;
+  --neutral: #5b6470;
+
+  --text-primary: #121417;
+  --text-secondary: #565e6b;
+  --text-tertiary: #8a929e;
+
+  --divider: #e6e6e3;
+
+  --chart-speed: #2e86e0;
+
+  --card-border: 1px solid var(--divider);
+  --card-shadow: 0 1px 2px rgba(18, 20, 23, 0.04), 0 8px 24px rgba(18, 20, 23, 0.06);
+
+  color-scheme: light;
+}
+
+/* ...and when their OS prefers light and they have NOT chosen dark. */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --bg: #f8f8f6;
+    --surface: #ffffff;
+    --surface-elevated: #ffffff;
+    --surface-muted: #ececea;
+
+    --accent: #e8742c;
+    --accent-muted: rgba(232, 116, 44, 0.13);
+    --on-accent: #ffffff;
+
+    --good: #2e9e22;
+    --improve: #ce8a12;
+    --risk: #d23b3b;
+    --neutral: #5b6470;
+
+    --text-primary: #121417;
+    --text-secondary: #565e6b;
+    --text-tertiary: #8a929e;
+
+    --divider: #e6e6e3;
+
+    --chart-speed: #2e86e0;
+
+    --card-border: 1px solid var(--divider);
+    --card-shadow: 0 1px 2px rgba(18, 20, 23, 0.04), 0 8px 24px rgba(18, 20, 23, 0.06);
+
+    color-scheme: light;
+  }
+}
+
+/* ---- Reset ------------------------------------------------------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: "Sora", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-weight: 400;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img,
+svg {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+/* Visible keyboard focus — never remove the ring without replacing it. */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Respect a reduced-motion preference: the tour animates a lot, and
+   vestibular disorders are triggered by exactly this kind of movement. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
