@@ -1,5 +1,6 @@
 import styles from "./page.module.css";
 import { Wordmark } from "@/components/Wordmark";
+import { SiteHeader } from "@/components/SiteHeader";
 import { ScrollCue } from "@/components/ScrollCue";
 
 const pillars = [
@@ -50,14 +51,7 @@ export default function Home() {
   return (
     <main className={styles.page}>
       <ScrollCue className={styles.scrollCue} />
-      <header className={styles.header}>
-        <a href="#top" aria-label="Rahi home"><Wordmark className={styles.logo} height={26} /></a>
-        <nav className={styles.nav} aria-label="Main navigation">
-          <a href="#how">How it works</a>
-          <a href="#roads">For every road</a>
-          <a className={styles.navCta} href="mailto:rahaanirban91@gmail.com?subject=Rahi%20early%20access">Get early access</a>
-        </nav>
-      </header>
+      <SiteHeader current="home" />
 
       <section className={styles.hero} id="top">
         <img className={styles.heroImage} src="/images/rahi-himalayan-hero.jpg" alt="A graphite SUV following a mountain road beneath the Himalayas" fetchPriority="high" />
@@ -74,7 +68,7 @@ export default function Home() {
         </div>
         <div className={styles.heroTelemetry} aria-hidden="true">
           <span className={styles.telemetryLabel}>LIVE DRIVE</span>
-          <svg viewBox="0 0 220 48"><path d="M1 37C20 37 26 35 38 35S52 16 66 18s17 17 30 13 15-23 29-20 18 30 34 24 18-15 30-12 13 10 30 9" /></svg>
+          <svg viewBox="0 0 220 48"><path pathLength="1" d="M1 37C20 37 26 35 38 35S52 16 66 18s17 17 30 13 15-23 29-20 18 30 34 24 18-15 30-12 13 10 30 9" /></svg>
           <div><strong>2,842 m</strong><small>ALTITUDE</small></div>
         </div>
         <span className={styles.scrollHint}>SCROLL TO EXPLORE</span>
@@ -196,14 +190,14 @@ export default function Home() {
       </section>
 
       <section className={styles.finalCta}>
-        <div className={styles.finalRoute} aria-hidden="true"><svg viewBox="0 0 900 180"><path d="M-30 150C100 120 170 170 268 112S430 18 520 65s112 107 205 58S830 30 940 16" /></svg></div>
+        <div className={styles.finalRoute} aria-hidden="true"><svg viewBox="0 0 900 180"><path pathLength="1" d="M-30 150C100 120 170 170 268 112S430 18 520 65s112 107 205 58S830 30 940 16" /></svg></div>
         <p className={styles.sectionLabel}>Coming soon to Android</p>
         <h2>Drive for the one<br /><span>behind you.</span></h2>
         <p>Built in India, for Indian roads.</p>
         <a className={styles.primaryCta} href="mailto:rahaanirban91@gmail.com?subject=Rahi%20early%20access">Ask for early access <span>↗</span></a>
       </section>
 
-      <footer className={styles.footer}><Wordmark height={22} /><p>Drive · Score · Improve</p><div><a href="/privacy/">Privacy</a><a href="mailto:rahaanirban91@gmail.com">Contact</a><span>© {new Date().getFullYear()} Rahi</span></div></footer>
+      <footer className={styles.footer}><Wordmark height={22} /><p>Drive · Score · Improve</p><div><a href="/about/">Our story</a><a href="/privacy/">Privacy</a><a href="mailto:rahaanirban91@gmail.com">Contact</a><span>© {new Date().getFullYear()} Rahi</span></div></footer>
     </main>
   );
 }

@@ -208,10 +208,10 @@ Policy text's source of truth is `backend/legal/privacy-policy.md` in the
 while production access is under review** — changing listing fields mid-review
 restarts clocks. Switch during a deliberate listing update after access lands.
 
-The policy also has known drift from the app's actual behaviour (it claims
-microphone and physical-activity permissions the manifest does not have, and
-understates what crash reports carry). Fix that in `driving-recorder` before the
-first open-testing release.
+The August 2026 audit corrected the earlier manifest/reporting drift: Rahi does
+not request microphone or physical-activity permission, and the policy now
+lists the complete crash-report fields. Re-audit the manifest and
+`CrashReporter.kt` whenever either changes.
 
 ---
 

@@ -6,7 +6,14 @@ Written 2026-08-15, after the polish/fit/DNA sessions. Read this + `CONTRIBUTING
 
 ---
 
-## 1. Where things stand
+## 1. Where things stand — V1 freeze
+
+**V1 was frozen on 15 August 2026.** The freeze includes the eight-screen Home
+page, eight-screen founder-story About page, complete card-based Privacy Policy,
+shared four-destination navigation, aligned Sora typography, lime brand tokens,
+section cues, separators, and route/event motion. The commit containing this
+handoff is the local V1 checkpoint; deployment remains a separate deliberate
+step.
 
 Live at `pulsar666.github.io/rahi-web` (CSS 404s there **by design** — the build
 targets the apex domain; see CONTRIBUTING §2). **drivewithrahi.com still points
@@ -19,7 +26,7 @@ Commit arc (all on `main`, every one deployed green):
 | commit | what |
 |---|---|
 | `5c32c6e`…`d96ad95` | early placeholder → horizontal deck era (retired) |
-| *(uncommitted user redesign)* | vertical editorial scroll, new AI hero imagery, ScrollCue |
+| *(original user redesign)* | vertical editorial scroll, new AI hero imagery, ScrollCue |
 | `1c8269f` | **polish overhaul**: 5 stacked CSS passes flattened into one tokened stylesheet; score/badge block rebuilt; BadgeShield component |
 | `0bda02c` | deterministic section snapping + first readability pass (49 sizes raised) |
 | `9f66410` | dead-press fix (48px NEAR tolerance) + arrows work when cue has focus |
@@ -27,9 +34,10 @@ Commit arc (all on `main`, every one deployed green):
 | `d86db61` | `allowedDevOrigins` (phone-on-LAN hydration) + sensor-truthful coaching copy |
 | `34c438a` | **"Your driving has a DNA" section** (board #40 fingerprint art); gauge-style arc |
 | `2c21250` | dial label moved below the ring — text can never overlap the stroke |
+| *(V1 freeze; this handoff)* | About, shared navigation, Home animation/alignment overhaul, complete card-based Privacy page |
 
-Dev server: `npm run dev` in `~/projects/rahi-web`, phone review at
-`http://<mac-ip>:3000` (IP was 192.168.1.3; if it changes, update
+Dev server: `npm run dev -- --hostname 0.0.0.0` in `~/projects/rahi-web`, phone
+review at `http://<mac-ip>:3000` (V1 was reviewed at 192.168.1.6; if it changes, update
 `allowedDevOrigins` in `next.config.ts` or hydration silently dies on the
 phone and **every button does nothing** — that exact bug cost a session).
 
@@ -62,17 +70,35 @@ Eight `<section>`s + footer, each **exactly one viewport tall** (see §4):
 8. **Final CTA** — "Drive for the one behind you." + early-access mailto.
    Footer: wordmark, DRIVE · SCORE · IMPROVE, Privacy/Contact.
 
-Navigation: `ScrollCue.tsx` — fixed bottom-centre up/down buttons +
-ArrowUp/Down/PageUp/Down. Index-based section snapping; **48px `NEAR`
+Navigation: `SiteHeader.tsx` is shared by Home, About, and Privacy, with the
+same Home, About us, Privacy policy, and early-access destinations on all three
+pages (an accessible compact menu on phones). `ScrollCue.tsx` provides
+fixed bottom-centre up/down buttons + ArrowUp/Down/PageUp/Down on both editorial
+pages. Index-based section snapping; **48px `NEAR`
 tolerance** is load-bearing (trackpad-grazes cancel smooth scrolls a few px
 short; a tight tolerance made the next press a dead 10px nudge). While a
 smooth scroll is in flight, presses step from the *pending* target.
+
+`/about/` is the non-technical founder story: eight one-viewport chapters from
+the 2021 Kalyani–Kolkata drives through the first beta community. It carries
+the poster language through its own non-overlapping asset set (`about-*.jpg`)
+and includes code-native animated route/network graphics. Do not reuse Home
+imagery or turn About into a second product-feature page. Like Home, every
+direct section must remain exactly one viewport at the five verified sizes
+below.
+
+`/privacy/` mirrors `driving-recorder/backend/legal/privacy-policy.md`. It is a
+complete, static, animation-free document: editorial hero, sticky contents card,
+11 individual policy cards, permissions table, and contact card. Its dark
+panels, hairline borders, 10–12px radii, lime number badges, and spacing are the
+same card language as Home/About. Re-audit the manifest and `CrashReporter.kt`
+before changing permission or diagnostic-data claims.
 
 ---
 
 ## 3. Design language (the system)
 
-- **Tokens on `.page`** in `page.module.css`: `--accent #b9ff38` (lime),
+- **Tokens on `.page`** in `page.module.css`: `--accent #7ee640` (the app's canonical dark-brand lime),
   `--bg #050505`, `--panel #0b0c0a`, `--card #080a08`, `--line #292a27`,
   `--ink` scale (f5f5f1 / c2c3bd / 91938e / 74776f), `--gold #f2c14e`,
   `--pad clamp(24px, 8vw, 128px)` — the one horizontal grid every section
@@ -146,9 +172,10 @@ Traps (each cost real debugging time):
    drive."). Also add a favicon/app icon set (public/ has none).
 3. **Wordmark decision** (CONTRIBUTING §4): app wordmark (current) vs the
    boards' lime "R" monogram. Decide once, apply everywhere.
-4. **Light theme**: the landing page is dark-only by design now (hardcoded
-   editorial palette); `globals.css` still carries the app's light tokens
-   used by `/privacy`. Either keep landing dark-forever (fine) or re-tokenise.
+4. **Light theme**: the landing, About, and privacy pages are dark-only by
+   design now (hardcoded editorial palette); `globals.css` still carries the
+   app's light tokens for future product surfaces. Either keep the marketing
+   site dark-forever (fine) or re-tokenise all three pages together.
 5. **Real photography** — replace AI crops as real trip stills accumulate
    (R2 archive has the raw drives; `reference_pull_trip_videos_from_phone`).
 6. **Waitlist**: mailto works but loses people; a real form needs a server →

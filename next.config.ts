@@ -23,7 +23,13 @@ const nextConfig: NextConfig = {
   // Without this Next blocks cross-origin dev assets, React never hydrates on
   // the phone, and every button silently does nothing. No effect on the
   // static export.
-  allowedDevOrigins: ["192.168.1.2", "192.168.1.3", "192.168.1.4", "192.168.1.5"],
+  allowedDevOrigins: [
+    "192.168.1.2",
+    "192.168.1.3",
+    "192.168.1.4",
+    "192.168.1.5",
+    "192.168.1.6",
+  ],
 };
 
 export default nextConfig;
