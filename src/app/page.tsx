@@ -88,11 +88,14 @@ export default function Home() {
             <p className={styles.miniLabel}>Score + badge</p>
             <div className={styles.scoreBody}>
               <div className={styles.scoreDial}>
-                <svg viewBox="0 0 96 96" aria-hidden="true">
-                  <circle className={styles.scoreRail} cx="48" cy="48" r="39" pathLength="100" />
-                  <circle className={styles.scoreArc} cx="48" cy="48" r="39" pathLength="100" />
-                </svg>
-                <span><small>Drive score</small><b>87<i>/100</i></b></span>
+                <div className={styles.dialRing}>
+                  <svg viewBox="0 0 96 96" aria-hidden="true">
+                    <circle className={styles.scoreRail} cx="48" cy="48" r="39" pathLength="100" />
+                    <circle className={styles.scoreArc} cx="48" cy="48" r="39" pathLength="100" />
+                  </svg>
+                  <b>87<i>/100</i></b>
+                </div>
+                <small>Drive score</small>
               </div>
               <div className={styles.scoreMeta}>
                 <BadgeShield id="badge-hawk" className={styles.badgeIcon} />

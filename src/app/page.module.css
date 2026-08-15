@@ -374,22 +374,31 @@
 
 .scoreBody {
   margin-top: 14px;
-  height: 124px;
+  min-height: 124px;
   display: flex;
   align-items: center;
   gap: 24px;
 }
 
+/* Only the number lives INSIDE the ring; the label is a caption below the
+   dial so text can never overlap the stroke. */
 .scoreDial {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 9px;
+}
+
+.dialRing {
   position: relative;
-  flex: 0 0 120px;
   width: 120px;
   height: 120px;
   display: grid;
   place-items: center;
 }
 
-.scoreDial > svg {
+.dialRing > svg {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -416,39 +425,30 @@
   filter: drop-shadow(0 0 5px #b9ff385c);
 }
 
-.scoreDial > span {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.scoreDial small {
+.scoreDial > small {
   color: var(--ink-4);
   font-size: 8.5px;
   font-weight: 600;
   line-height: 1;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.15em;
   text-transform: uppercase;
-  margin-bottom: 4px;
 }
 
-/* Number stack matches the reference dial: label / big number / "/100",
-   all centred on the ring axis so nothing can drag the numeral off-centre
-   or collide with the ring. */
-.scoreDial b {
+/* Number stack, centred on the ring axis: 87 with /100 beneath it. */
+.dialRing b {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   font-weight: 700;
-  font-size: 36px;
+  font-size: 37px;
   line-height: 1;
   letter-spacing: -0.05em;
   color: var(--ink);
 }
 
-.scoreDial i {
-  margin-top: 3px;
+.dialRing i {
+  margin-top: 4px;
   color: var(--ink-4);
   font-size: 10.5px;
   font-style: normal;
@@ -1467,7 +1467,7 @@
     padding: 8px 0;
   }
   .scoreOverview {
-    padding-bottom: 12px;
+    padding-bottom: 8px;
   }
   .scoreBody {
     margin-top: 8px;
@@ -1475,16 +1475,17 @@
     gap: 18px;
   }
   .scoreDial {
-    flex-basis: 100px;
+    gap: 6px;
+  }
+  .dialRing {
     width: 100px;
     height: 100px;
   }
-  .scoreDial b {
+  .dialRing b {
     font-size: 30px;
   }
-  .scoreDial small {
+  .scoreDial > small {
     font-size: 8px;
-    margin-bottom: 2px;
   }
   .scoreMeta strong {
     font-size: 15px;
@@ -1807,12 +1808,20 @@
   .rankGraphic {
     margin-top: 14px;
   }
-  .scoreDial {
-    flex-basis: 82px;
+  .intro {
+    padding-bottom: 26px;
+  }
+  .scoreOverview {
+    padding-bottom: 5px;
+  }
+  .rankProgress {
+    padding-top: 9px;
+  }
+  .dialRing {
     width: 82px;
     height: 82px;
   }
-  .scoreDial b {
+  .dialRing b {
     font-size: 25px;
   }
   .tierTrack {
