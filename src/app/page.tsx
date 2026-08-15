@@ -136,6 +136,22 @@ export default function Home() {
         </figure>
       </section>
 
+      <section className={styles.dna}>
+        <div className={styles.dnaCopy}>
+          <p className={styles.sectionLabel}>Style, not skill</p>
+          <h2>Your driving<br />has a <em>DNA.</em></h2>
+          <p>No two people drive alike. Across trips, Rahi learns the shape of how you drive — the way you feed the pedal, carry a corner, hold your pace — until the pattern is a signature only you could leave.</p>
+          <div className={styles.dnaTraits}>
+            {["Pedal work", "Cornering", "Consistency", "Pace", "Anticipation"].map((trait, index) => (
+              <span key={trait}><i>{String(index + 1).padStart(2, "0")}</i>{trait}</span>
+            ))}
+          </div>
+        </div>
+        <figure className={styles.dnaVisual}>
+          <img src="/images/dna.jpg" width={660} height={775} loading="lazy" decoding="async" alt="A fingerprint drawn from road lane markings, with a car driving up into its centre" />
+        </figure>
+      </section>
+
       <section className={styles.coach}>
         <img src="/images/rahi-coach-city-clean.jpg" alt="A calm monsoon drive through an Indian city at blue hour" loading="lazy" />
         <div className={styles.coachOverlay} />

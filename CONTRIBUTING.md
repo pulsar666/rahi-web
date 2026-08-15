@@ -227,7 +227,7 @@ first open-testing release.
 
 ### `public/images/` provenance
 
-The four photos on the landing page (`city`, `valley`, `beach`, `dusk`) are
+The photos on the landing page (`city`, `valley`, `beach`, `dusk`, the `rahi-*` heroes and `dna` — the fingerprint art from the 'Your driving has a DNA' board) are
 **crops of those AI-generated concept boards** — clean photographic regions cut
 out with ffmpeg, avoiding the boards' baked-in text and UI. They are
 placeholders with the right mood, not real captures. When real trip photography
