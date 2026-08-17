@@ -11,15 +11,41 @@ Written 2026-08-15, after the polish/fit/DNA sessions. Read this + `CONTRIBUTING
 **V1 was frozen on 15 August 2026.** The freeze includes the eight-screen Home
 page, eight-screen founder-story About page, complete card-based Privacy Policy,
 shared four-destination navigation, aligned Sora typography, lime brand tokens,
-section cues, separators, and route/event motion. The commit containing this
-handoff is the local V1 checkpoint; deployment remains a separate deliberate
-step.
+section cues, separators, and route/event motion.
 
-Live at `pulsar666.github.io/rahi-web` (CSS 404s there **by design** — the build
-targets the apex domain; see CONTRIBUTING §2). **drivewithrahi.com still points
-at GoDaddy parking IPs — the DNS records have never been applied.** That is the
-single blocker between "done" and "live". Records + verification commands are in
-CONTRIBUTING §2; after propagation, re-run the `https_enforced=true` call.
+## ✅ LIVE at https://drivewithrahi.com (15 August 2026)
+
+V1 (`9546aa5`, tag `v1.0.0`) is pushed and deployed; the apex serves it over
+HTTPS. Let's Encrypt certificate covers apex + `www`, expires 13 Nov 2026 and
+auto-renews. `https_enforced: true`. Verified end-to-end through public DNS.
+
+DNS at GoDaddy (nameservers left at GoDaddy default; Forwarding "Not set up"
+on both Domain and Subdomains):
+
+- four `A` records on `@` → `185.199.108.153`, `.109.153`, `.110.153`, `.111.153`
+- one `CNAME` on `www` → `pulsar666.github.io.`
+
+⚠️ **GitHub does not necessarily START certificate issuance on its own.** With
+DNS already correct the Pages API sat at `status: null` with *no*
+`https_certificate` object — idle, not slow. Clearing and re-setting the custom
+domain forces a fresh DNS check and issuance begins immediately:
+
+```bash
+gh api -X PUT repos/pulsar666/rahi-web/pages -f cname=""
+gh api -X PUT repos/pulsar666/rahi-web/pages -f cname=drivewithrahi.com
+# once .https_certificate.state == "approved":
+gh api -X PUT repos/pulsar666/rahi-web/pages -F https_enforced=true
+```
+
+Two traps worth knowing if this is ever redone. In GoDaddy's editor, extra IPs
+go on the existing record via **"Add another value"** — creating separate
+`A @` rows raises a misleading "Invalid data provided for record data" pointed
+at the wrong row. And after the switchover your own ISP resolver may serve the
+old parking IPs for up to the 3600 s TTL while the rest of the world sees the
+new ones; that is cache expiry, not misconfiguration, and it needs no fix.
+
+`pulsar666.github.io/rahi-web` still 404s its CSS **by design** — the build
+targets the apex domain and has no `basePath` (see CONTRIBUTING §2).
 
 Commit arc (all on `main`, every one deployed green):
 
@@ -165,8 +191,7 @@ Traps (each cost real debugging time):
 
 ## 6. Roadmap / open items (rough priority)
 
-1. **DNS** (the launch blocker) — apply the GoDaddy records, verify, then
-   enforce HTTPS. Everything else already deploys on push.
+1. ~~**DNS**~~ — done 15 Aug 2026; the apex is live over HTTPS (see above).
 2. **Social/meta polish** — no `og:image` yet; generate a 1200×630 card in
    the site language (dark, lime, wordmark + "Know how you actually
    drive."). Also add a favicon/app icon set (public/ has none).

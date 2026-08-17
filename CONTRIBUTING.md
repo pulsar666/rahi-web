@@ -47,8 +47,9 @@ it and Pages drops the custom domain on the next deploy, and the site 404s.
 The domain is registered at GoDaddy; hosting is GitHub Pages. GoDaddy is **only
 a registrar here** — no GoDaddy hosting product is involved.
 
-DNS records to set in **GoDaddy → My Products → drivewithrahi.com → DNS →
-Manage DNS**. Delete GoDaddy's parked `A` @ record and parked `www` CNAME first.
+**Applied 15 Aug 2026 — the apex is live.** These are the records now in
+**GoDaddy → My Products → drivewithrahi.com → DNS → Manage DNS** (Forwarding
+stays "Not set up"; nameservers stay GoDaddy default):
 
 | Type | Name | Value |
 |---|---|---|
@@ -58,22 +59,38 @@ Manage DNS**. Delete GoDaddy's parked `A` @ record and parked `www` CNAME first.
 | A | @ | 185.199.111.153 |
 | CNAME | www | pulsar666.github.io |
 
-Then:
+⚠️ In GoDaddy's editor the four IPs live on **one** `A @` record via the
+**"Add another value"** link. Creating four separate `A @` rows fails with a
+misleading *"Invalid data provided for record data"* attached to the wrong row.
 
 ```bash
-# already done once; re-run only if the domain is reset
+# already done; re-run only if the domain is reset
 gh api -X PUT repos/pulsar666/rahi-web/pages -f cname=drivewithrahi.com
-
-# only AFTER dns resolves — 404s with "certificate does not exist yet" before that
-gh api -X PUT repos/pulsar666/rahi-web/pages -f cname=drivewithrahi.com -F https_enforced=true
 
 # verify
 dig +short drivewithrahi.com A
+gh api repos/pulsar666/rahi-web/pages --jq '.https_certificate.state'
 ```
+
+⚠️ **GitHub may never start cert issuance on its own.** If the Pages API shows
+`status: null` and no `https_certificate` object while DNS is already correct,
+it is idle, not slow — clear and re-set the domain to force a fresh check:
+
+```bash
+gh api -X PUT repos/pulsar666/rahi-web/pages -f cname=""
+gh api -X PUT repos/pulsar666/rahi-web/pages -f cname=drivewithrahi.com
+# then, once state == "approved" (404s before the cert exists):
+gh api -X PUT repos/pulsar666/rahi-web/pages -F https_enforced=true
+```
+
+After a switchover your own ISP resolver can keep serving the old IPs for up to
+the 3600 s TTL while every public resolver is already correct. That is cache
+expiry, not misconfiguration — check `dig +short drivewithrahi.com A @1.1.1.1`
+before changing anything.
 
 **Do not add `basePath`.** On `pulsar666.github.io/rahi-web/` the CSS and fonts
 404 because the site is built for the apex domain. That is correct and resolves
-itself once DNS lands. Adding `basePath` would break the apex deploy.
+itself on the apex domain. Adding `basePath` would break the apex deploy.
 
 ---
 
