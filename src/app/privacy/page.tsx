@@ -275,7 +275,11 @@ export default function Privacy() {
             <p className={styles.sectionNumber}>11</p>
             <h2>Questions about your privacy?</h2>
             <p>For a privacy request, or to reach our grievance officer:</p>
-            <a href="mailto:rahaanirban91@gmail.com">rahaanirban91@gmail.com <span aria-hidden="true">↗</span></a>
+            <a href="mailto:privacy@drivewithrahi.com">privacy@drivewithrahi.com <span aria-hidden="true">↗</span></a>
+            <p className={styles.responseNote}>
+              For general help with the app, write to{" "}
+              <a href="mailto:support@drivewithrahi.com">support@drivewithrahi.com</a>.
+            </p>
             <p className={styles.responseNote}>
               We aim to respond within a reasonable time and within timelines
               required by applicable law.

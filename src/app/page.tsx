@@ -62,7 +62,7 @@ export default function Home() {
           <h1>Know your drive.<br /><em>Own the next one.</em></h1>
           <p className={styles.heroCopy}>Rahi turns your phone into a thoughtful driving coach — reading every journey, revealing your habits, and helping you get better where it matters.</p>
           <div className={styles.heroActions}>
-            <a className={styles.primaryCta} href="mailto:rahaanirban91@gmail.com?subject=Rahi%20early%20access">Join early access <span>↗</span></a>
+            <a className={styles.primaryCta} href="mailto:support@drivewithrahi.com?subject=Rahi%20early%20access">Join early access <span>↗</span></a>
             <a className={styles.textCta} href="#how">Discover Rahi <span>↓</span></a>
           </div>
         </div>
@@ -194,10 +194,10 @@ export default function Home() {
         <p className={styles.sectionLabel}>Coming soon to Android</p>
         <h2>Drive for the one<br /><span>behind you.</span></h2>
         <p>Built in India, for Indian roads.</p>
-        <a className={styles.primaryCta} href="mailto:rahaanirban91@gmail.com?subject=Rahi%20early%20access">Ask for early access <span>↗</span></a>
+        <a className={styles.primaryCta} href="mailto:support@drivewithrahi.com?subject=Rahi%20early%20access">Ask for early access <span>↗</span></a>
       </section>
 
-      <footer className={styles.footer}><Wordmark height={22} /><p>Drive · Score · Improve</p><div><a href="/about/">Our story</a><a href="/privacy/">Privacy</a><a href="mailto:rahaanirban91@gmail.com">Contact</a><span>© {new Date().getFullYear()} Rahi</span></div></footer>
+      <footer className={styles.footer}><Wordmark height={22} /><p>Drive · Score · Improve</p><div><a href="/about/">Our story</a><a href="/privacy/">Privacy</a><a href="mailto:support@drivewithrahi.com">Contact</a><span>© {new Date().getFullYear()} Rahi</span></div></footer>
     </main>
   );
 }

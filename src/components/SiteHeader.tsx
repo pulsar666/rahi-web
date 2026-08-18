@@ -24,7 +24,7 @@ export function SiteHeader({ current }: { current: "home" | "about" | "privacy" 
             {link.label}
           </a>
         ))}
-        <a className={styles.cta} href="mailto:rahaanirban91@gmail.com?subject=Rahi%20early%20access">
+        <a className={styles.cta} href="mailto:support@drivewithrahi.com?subject=Rahi%20early%20access">
           Get early access
         </a>
       </nav>
@@ -40,7 +40,7 @@ export function SiteHeader({ current }: { current: "home" | "about" | "privacy" 
               {link.label}
             </a>
           ))}
-          <a className={styles.mobileCta} href="mailto:rahaanirban91@gmail.com?subject=Rahi%20early%20access">
+          <a className={styles.mobileCta} href="mailto:support@drivewithrahi.com?subject=Rahi%20early%20access">
             Get early access <span>↗</span>
           </a>
         </nav>

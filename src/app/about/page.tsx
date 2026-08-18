@@ -207,13 +207,13 @@ export default function About() {
         <p className={styles.eyebrow}>This is only the beginning</p>
         <h2>Come help shape<br /><span>the road ahead.</span></h2>
         <p>Built in India, for Indian roads—and for everyone sharing them.</p>
-        <a href="mailto:rahaanirban91@gmail.com?subject=Rahi%20early%20access">Join early access <span>↗</span></a>
+        <a href="mailto:support@drivewithrahi.com?subject=Rahi%20early%20access">Join early access <span>↗</span></a>
       </section>
 
       <footer className={styles.footer}>
         <a href="/" aria-label="Rahi home"><Wordmark height={22} /></a>
         <p>Drive · Score · Improve</p>
-        <div><a href="/">Home</a><a href="/privacy/">Privacy</a><a href="mailto:rahaanirban91@gmail.com">Contact</a><span>© {new Date().getFullYear()} Rahi</span></div>
+        <div><a href="/">Home</a><a href="/privacy/">Privacy</a><a href="mailto:support@drivewithrahi.com">Contact</a><span>© {new Date().getFullYear()} Rahi</span></div>
       </footer>
     </main>
   );
