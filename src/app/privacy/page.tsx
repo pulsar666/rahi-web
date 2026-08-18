@@ -38,7 +38,7 @@ export default function Privacy() {
         <div className={styles.heroInner}>
           <p className={styles.eyebrow}>Your data, explained plainly</p>
           <h1><span>Privacy</span> <span>Policy</span></h1>
-          <p className={styles.updated}>Last updated: 15 August 2026</p>
+          <p className={styles.updated}>Last updated: 18 August 2026</p>
           <p className={styles.intro}>
             Rahi turns your phone&apos;s motion and location sensors into a
             personal driving score and coaching. This policy explains what
@@ -147,6 +147,7 @@ export default function Privacy() {
                   <tr><td>Notifications</td><td>To show recording status and trip-ready alerts.</td></tr>
                   <tr><td>Foreground service / keep awake</td><td>To keep recording reliably while your screen is off.</td></tr>
                   <tr><td>Network access</td><td>To upload sensor data and fetch scores and coaching.</td></tr>
+                  <tr><td>Ignore battery optimisations (optional)</td><td>Only if you grant it: stops Android from suspending a recording mid-drive on phones with aggressive power management. Recording works without it, but may be interrupted.</td></tr>
                 </tbody>
               </table>
             </div>
@@ -204,10 +205,19 @@ export default function Privacy() {
               third party.
             </p>
             <p>
-              If Rahi later offers a feature built on aggregated, anonymised
-              road data, such data will be statistically combined across many
-              drivers so an individual trip or person cannot be identified.
-              We will describe the feature before it applies.
+              Rahi includes a <strong>shared road-hazard map</strong>. When your
+              trip detects a rough patch or pothole, that location contributes
+              to an aggregate hazard layer that warns other drivers approaching
+              the same stretch. This layer is statistically combined across many
+              drivers: it stores only the location, a severity tier, and how many
+              distinct users confirmed it — never your user ID, your trip ID, or
+              your route. An individual trip or person cannot be identified from
+              it, and hazards decay over time as roads are repaired.
+            </p>
+            <p>
+              If Rahi later offers further features built on aggregated,
+              anonymised road data, they will follow the same principle and be
+              described to you before they apply.
             </p>
           </section>
 
