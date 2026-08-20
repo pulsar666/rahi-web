@@ -29,18 +29,36 @@
   content: "";
   position: absolute;
   inset: 0;
+  /* BEHIND the header's children.
+     Without z-index:-1 the pseudo-element paints ON TOP of the wordmark and
+     the nav pill (an ::before with z-index:auto sits above non-positioned
+     siblings), so the whole bar looked washed out on desktop — the lime CTA
+     and the RAHI wordmark were being veiled by the scrim itself. */
+  z-index: -1;
   background: linear-gradient(180deg, #000c 0%, #0005 58%, transparent 100%);
-  transition: opacity .3s ease;
+  transition: opacity .3s ease, background .3s ease;
   pointer-events: none;
 }
 
-/* Scrolled state: swap the hero gradient for a solid blurred bar so the
-   wordmark and nav stay legible over arbitrary section backgrounds. */
+/* Scrolled state: a soft scrim so the wordmark stays legible over arbitrary
+   section art.
+
+   NO backdrop-filter here. The scrim spans the full header width, which means
+   it also sits UNDER the desktop nav pill — and the pill already paints its
+   own opaque background. Blurring/darkening beneath an opaque element does
+   nothing but mute it, which read as the whole nav going dull on desktop.
+   A plain gradient scrim keeps the pill's own contrast intact. */
 .header[data-scrolled="true"]::before {
-  background: #08090899;
-  backdrop-filter: blur(14px) saturate(1.1);
-  -webkit-backdrop-filter: blur(14px) saturate(1.1);
-  border-bottom: 1px solid #ffffff14;
+  background: linear-gradient(180deg, #080908e6 0%, #080908b8 62%, #08090800 100%);
+}
+
+/* The pill carries its own blur, scoped to itself, so the glass effect
+   survives without washing out the bar. */
+.header[data-scrolled="true"] .desktopNav {
+  backdrop-filter: blur(14px) saturate(1.15);
+  -webkit-backdrop-filter: blur(14px) saturate(1.15);
+  background: #080908f2;
+  border-color: #ffffff3d;
 }
 
 .brand { color: white; flex: 0 0 auto; }
@@ -90,6 +108,10 @@
   background: var(--accent, #7ee640);
   color: #0a1a00;
   font-weight: 700;
+  /* "Get it on Google Play" is long enough to wrap inside a pill on narrow
+     desktop widths and at large system text sizes, which broke the pill's
+     round geometry. Keep it on one line and let the row shrink instead. */
+  white-space: nowrap;
 }
 
 .desktopNav .cta:hover { color: #0a1a00; background: #91ec5c; transform: translateY(-1px); }
@@ -153,5 +175,19 @@
     background: var(--accent, #7ee640);
     box-shadow: 0 0 9px var(--accent, #7ee640);
   }
-  .mobileMenu nav .mobileCta { margin-top: 5px; justify-content: space-between; background: var(--accent, #7ee640); color: #0a1a00; font-weight: 700; }
+  .mobileMenu nav .mobileCta {
+    margin-top: 5px;
+    justify-content: space-between;
+    background: var(--accent, #7ee640);
+    color: #0a1a00;
+    font-weight: 700;
+    /* Grow to fit rather than clipping: at 1.3x system text this label needs
+       two lines in a 270px sheet, and a fixed 44px row cut it in half. */
+    min-height: 44px;
+    height: auto;
+    padding-block: 11px;
+    line-height: 1.25;
+    gap: 10px;
+  }
+  .mobileMenu nav .mobileCta > span { flex: 0 0 auto; }
 }

@@ -13,10 +13,25 @@
   overflow: hidden;
 }
 
+/* HEADER CLEARANCE — same fix as the landing page (see page.module.css).
+   The fixed header would otherwise cover the first line of a snapped section;
+   measured here on "From one driver to many". --header-h mirrors the two
+   header heights in SiteHeader.module.css. */
+.page {
+  --header-h: 94px;
+}
+
+@media (max-width: 700px) {
+  .page {
+    --header-h: calc(68px + env(safe-area-inset-top));
+  }
+}
+
 /* Edge-faded chapter separator: visible enough to give the long-form story
    rhythm, restrained enough to stay behind the photography and typography. */
 .page > section:not(.hero) {
   position: relative;
+  padding-top: calc(var(--header-h) + 14px);
 }
 
 .page > section:not(.hero)::before {

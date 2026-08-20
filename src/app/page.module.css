@@ -143,15 +143,23 @@
 .primaryCta {
   display: inline-flex;
   align-items: center;
-  gap: 38px;
+  /* A FIXED 38px gap plus a long label ("Get it on Google Play") overflowed
+     the available width on phones, so the label wrapped to 2-3 lines and the
+     button lost its shape. The gap now collapses under pressure and the label
+     is kept on one line; the arrow never wraps away from it. */
+  gap: clamp(14px, 4vw, 38px);
   background: var(--accent);
   color: #0a1300;
   padding: 16px 19px 16px 24px;
   font-size: 13px;
   font-weight: 700;
   border-radius: 3px;
+  white-space: nowrap;
   transition: transform 0.25s, background 0.25s;
 }
+
+/* Keep the arrow glued to the label and never let it be the wrap point. */
+.primaryCta > span { flex: 0 0 auto; }
 
 .primaryCta:hover {
   transform: translateY(-3px);
@@ -257,6 +265,35 @@
   font-size: 9px;
   letter-spacing: 0.2em;
   color: #8a8d84;
+}
+
+/* HEADER CLEARANCE.
+   The site header is position:fixed (so nav stays reachable from any section)
+   and ScrollCue snaps each section to its raw offsetTop, which lands a
+   section's first line flush under the bar. Measured occlusions: the green
+   .sectionLabel of "A different kind of driving app" (mobile, label top 62px
+   vs header bottom 68px) and "The road remembers" / "From one driver to many"
+   (desktop + tablet, 94px bar).
+
+   Sections are full-viewport with centred content, so reserving top space
+   INSIDE the section clears the bar without touching ScrollCue's snap maths.
+   The hero is excluded — it owns the top of the page and is designed to sit
+   under the transparent bar.
+
+   --header-h tracks the two header heights in SiteHeader.module.css; keep
+   them in sync. */
+.page {
+  --header-h: 94px;
+}
+
+.page > section:not(.hero) {
+  padding-top: calc(var(--header-h) + 14px);
+}
+
+@media (max-width: 700px) {
+  .page {
+    --header-h: calc(68px + env(safe-area-inset-top));
+  }
 }
 
 /* ---- Shared section chrome ----------------------------------------------- */
