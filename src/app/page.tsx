@@ -198,16 +198,13 @@ export default function Home() {
         <p>Built in India, for Indian roads.</p>
         <a className={styles.primaryCta} href={PLAY_STORE_URL} target="_blank" rel="noopener noreferrer">Get it on Google Play <span>↗</span></a>
 
-        {/* Community card. Sits AFTER the store CTA on purpose — install is
-            still the primary action; this is the second thing the eye lands
-            on, and the last thing a visitor sees before the footer. */}
-        <a className={styles.communityCard} href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer">
-          <span className={styles.communityIcon}><InstagramGlyph size={21} /></span>
-          <span className={styles.communityText}>
-            <small>Join our Instagram community</small>
-            <strong>{INSTAGRAM_HANDLE}</strong>
-          </span>
-          <span className={styles.communityArrow} aria-hidden="true">↗</span>
+        {/* Secondary CTA under the store button — install stays primary, and
+            this is the last thing a visitor sees before the footer. */}
+        <a className={styles.communityCta} href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer">
+          <InstagramGlyph size={17} />
+          <i>Follow</i>
+          {INSTAGRAM_HANDLE}
+          <span aria-hidden="true">↗</span>
         </a>
       </section>
 

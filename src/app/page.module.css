@@ -1141,86 +1141,73 @@
   to { stroke-dashoffset: -0.25; }
 }
 
-/* ---- Instagram community card --------------------------------------------------
-   The "noticed by visitors" surface. It has to draw the eye without competing
-   with the lime Play CTA directly above it, so it inverts the relationship:
-   dark panel, lime glyph and lime handle, hairline border. Same card language
-   as the rest of the site (near-black fill, --line hairline, small radius).
-   The glyph sits in a tinted lime tile — the one filled shape — which is what
-   the eye actually catches from across the section. */
-.communityCard {
-  position: relative;
-  /* Fixed width rather than shrink-to-fit: the label + handle only need
-     ~300px, and letting the card size to its content left it visibly
-     narrower than the 235px Play CTA's optical weight. 330px reads as the
-     deliberate second half of a pair on the shared centre axis, and caps to
-     the column on phones. */
-  width: min(330px, 100%);
-  margin-top: 22px;
+/* ---- Instagram community CTA ---------------------------------------------------
+   A SECONDARY CTA, not a card. The section already establishes the button
+   geometry with .primaryCta (3px radius, 13px/700 label, arrow glued to the
+   text) and the hero already establishes the pair idiom (.heroActions =
+   filled primary + lightweight secondary). An earlier attempt here used a
+   10px-radius panel with a two-line stack, which imported a different
+   component language into a section that had none — it read as borrowed.
+   This mirrors .primaryCta exactly and changes only the fill: off-white
+   instead of lime.
+
+   FILLED, not outlined. An outlined lime version was tried first and it
+   receded into the black — it read as an afterthought hung off the real
+   button, which defeats the point of putting it here. A solid block holds
+   equal weight to the lime CTA, so the eye registers the pair; and using
+   the neutral rather than a second lime keeps the two from competing in
+   the same hue. Same width (233px vs 235px) completes the pairing. */
+.communityCta {
   display: inline-flex;
   align-items: center;
-  gap: 14px;
-  padding: 11px 16px 11px 11px;
-  border: 1px solid #33402a;
-  border-radius: 10px;
-  background: linear-gradient(180deg, #10140d, #0a0c08);
-  text-align: left;
+  gap: 10px;
+  margin-top: 14px;
+  /* 1px less block padding than .primaryCta so the 1px border lands both
+     buttons on the same rendered height. */
+  padding: 15px 19px 15px 24px;
+  border: 1px solid var(--ink);
+  border-radius: 3px;
+  background: var(--ink);
+  color: #0a0c08;
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
   transition: transform 0.25s, border-color 0.25s, background 0.25s;
 }
 
-.communityCard:hover {
+.communityCta:hover {
   transform: translateY(-3px);
-  border-color: var(--accent);
-  background: linear-gradient(180deg, #141a0f, #0c0f09);
+  border-color: #ffffff;
+  background: #ffffff;
 }
 
-.communityIcon {
+/* Glyph rides with the label, matching how .primaryCta keeps its arrow
+   glued to the text rather than pushed to an edge. */
+.communityCta svg {
   flex: 0 0 auto;
-  width: 38px;
-  height: 38px;
-  display: grid;
-  place-items: center;
-  border-radius: 9px;
-  background: #7ee6401f;
-  color: var(--accent);
-  transition: background 0.25s;
 }
 
-.communityCard:hover .communityIcon {
-  background: #7ee6402e;
+/* "Follow", not "Join us on Instagram" — the glyph already names the
+   network, and the longer label pushed the button ~90px wider than the
+   Play CTA above it, so the pair looked mismatched rather than stacked. */
+.communityCta i {
+  font-style: normal;
+  /* Muted against the white fill, the same way .primaryCta's arrow sits
+     lighter than its label — the handle is the emphasis, "Follow" is the verb. */
+  color: #5c5f57;
+  font-weight: 500;
 }
 
-.communityText {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-  line-height: 1;
-}
-
-/* Uppercase micro-header, same 9.5px floor as .miniLabel elsewhere. */
-.communityText small {
-  font-size: 9.5px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: #8f918a;
-}
-
-.communityText strong {
-  font-size: 14px;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  color: var(--accent);
-}
-
-.communityArrow {
-  margin-left: auto;
+.communityCta > span {
+  flex: 0 0 auto;
+  margin-left: 4px;
   font-size: 15px;
-  color: #74776f;
-  transition: color 0.25s, transform 0.25s;
+  font-weight: 400;
+  color: #0a0c08;
+  transition: transform 0.25s;
 }
 
-.communityCard:hover .communityArrow {
-  color: var(--accent);
+.communityCta:hover > span {
   transform: translate(2px, -2px);
 }
 
@@ -1851,8 +1838,8 @@
   .finalCta > p:not(.sectionLabel) {
     margin: 18px 0 28px;
   }
-  .communityCard {
-    margin-top: 18px;
+  .communityCta {
+    margin-top: 12px;
   }
   .footer {
     padding: 28px 20px calc(28px + env(safe-area-inset-bottom));
