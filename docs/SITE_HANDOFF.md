@@ -203,16 +203,24 @@ Traps (each cost real debugging time):
    site dark-forever (fine) or re-tokenise all three pages together.
 5. **Real photography** — replace AI crops as real trip stills accumulate
    (R2 archive has the raw drives; `reference_pull_trip_videos_from_phone`).
-6. **Waitlist**: mailto works but loses people; a real form needs a server →
+6. **Social presence** — Instagram (`@rahidrives`) is linked from the header
+   (icon pill, all pages), the Home final-CTA community card, and both
+   footers (`ecb2a3e`). `INSTAGRAM_URL`/`INSTAGRAM_HANDLE` live in
+   `src/lib/links.ts`; the glyph is `InstagramGlyph.tsx`, drawn in
+   `currentColor` because the palette is lime + neutrals only. No other
+   network is linked yet — if one is added, it joins the same three
+   placements, and the header pill gets a group rather than a second
+   standalone icon (the nav is already width-tight on narrow desktops).
+7. **Waitlist**: mailto works but loses people; a real form needs a server →
    Cloudflare Pages + Functions migration path (CONTRIBUTING §3), or a
    third-party form endpoint.
-7. **Dead code sweep**: `Deck.tsx`, `HazardRelay.tsx`, `AxisRadar.tsx`,
+8. **Dead code sweep**: `Deck.tsx`, `HazardRelay.tsx`, `AxisRadar.tsx`,
    `RouteLine.tsx`, `StatCard.tsx` are retired-but-present; the `data-inview`
    CSS system in `globals.css` is now unused by the landing page. Harmless
    (tree-shaken), delete when convenient.
-8. **Live numbers** (later, tempting): build-time Supabase snapshot of fleet
+9. **Live numbers** (later, tempting): build-time Supabase snapshot of fleet
    totals — MUST follow CONTRIBUTING §3 (no browser credentials, filter
    `not_a_drive` at source).
-9. **Play-listing linkage**: when production access lands, point the store
+10. **Play-listing linkage**: when production access lands, point the store
    listing's website field here — and only then touch the privacy-policy URL
    (CONTRIBUTING §7 warning about mid-review changes).
