@@ -2,7 +2,8 @@ import styles from "./page.module.css";
 import { Wordmark } from "@/components/Wordmark";
 import { SiteHeader } from "@/components/SiteHeader";
 import { ScrollCue } from "@/components/ScrollCue";
-import { PLAY_STORE_URL } from "@/lib/links";
+import { InstagramGlyph } from "@/components/InstagramGlyph";
+import { INSTAGRAM_HANDLE, INSTAGRAM_URL, PLAY_STORE_URL } from "@/lib/links";
 
 const pillars = [
   { number: "01", title: "Feel the drive", copy: "Your phone reads every brake, corner and surge — quietly, while you focus on the road." },
@@ -196,9 +197,21 @@ export default function Home() {
         <h2>Drive for the one<br /><span>behind you.</span></h2>
         <p>Built in India, for Indian roads.</p>
         <a className={styles.primaryCta} href={PLAY_STORE_URL} target="_blank" rel="noopener noreferrer">Get it on Google Play <span>↗</span></a>
+
+        {/* Community card. Sits AFTER the store CTA on purpose — install is
+            still the primary action; this is the second thing the eye lands
+            on, and the last thing a visitor sees before the footer. */}
+        <a className={styles.communityCard} href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer">
+          <span className={styles.communityIcon}><InstagramGlyph size={21} /></span>
+          <span className={styles.communityText}>
+            <small>Join our Instagram community</small>
+            <strong>{INSTAGRAM_HANDLE}</strong>
+          </span>
+          <span className={styles.communityArrow} aria-hidden="true">↗</span>
+        </a>
       </section>
 
-      <footer className={styles.footer}><Wordmark height={22} /><p>Drive · Score · Improve</p><div><a href="/about/">Our story</a><a href="/privacy/">Privacy</a><a href="mailto:support@drivewithrahi.com">Contact</a><span>© {new Date().getFullYear()} Rahi</span></div></footer>
+      <footer className={styles.footer}><Wordmark height={22} /><p>Drive · Score · Improve</p><div><a href="/about/">Our story</a><a href="/privacy/">Privacy</a><a href="mailto:support@drivewithrahi.com">Contact</a><a className={styles.footerSocial} href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer"><InstagramGlyph size={14} />Instagram</a><span>© {new Date().getFullYear()} Rahi</span></div></footer>
     </main>
   );
 }

@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { Wordmark } from "@/components/Wordmark";
 import { ScrollCue } from "@/components/ScrollCue";
 import { SiteHeader } from "@/components/SiteHeader";
-import { PLAY_STORE_URL } from "@/lib/links";
+import { InstagramGlyph } from "@/components/InstagramGlyph";
+import { INSTAGRAM_URL, PLAY_STORE_URL } from "@/lib/links";
 import styles from "./about.module.css";
 
 export const metadata: Metadata = {
@@ -214,7 +215,7 @@ export default function About() {
       <footer className={styles.footer}>
         <a href="/" aria-label="Rahi home"><Wordmark height={22} /></a>
         <p>Drive · Score · Improve</p>
-        <div><a href="/">Home</a><a href="/privacy/">Privacy</a><a href="mailto:support@drivewithrahi.com">Contact</a><span>© {new Date().getFullYear()} Rahi</span></div>
+        <div><a href="/">Home</a><a href="/privacy/">Privacy</a><a href="mailto:support@drivewithrahi.com">Contact</a><a className={styles.footerSocial} href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer"><InstagramGlyph size={14} />Instagram</a><span>© {new Date().getFullYear()} Rahi</span></div>
       </footer>
     </main>
   );

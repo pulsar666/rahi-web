@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { Wordmark } from "./Wordmark";
-import { PLAY_STORE_URL } from "@/lib/links";
+import { InstagramGlyph } from "./InstagramGlyph";
+import { INSTAGRAM_HANDLE, INSTAGRAM_URL, PLAY_STORE_URL } from "@/lib/links";
 import styles from "./SiteHeader.module.css";
 
 const links = [
@@ -48,6 +49,20 @@ export function SiteHeader({ current }: { current: "home" | "about" | "privacy" 
             {link.label}
           </a>
         ))}
+        {/* Icon-only inside the pill: the nav already carries one long label
+            ("Get it on Google Play") and a second worded link made the pill
+            wrap on narrow desktop widths. The glyph keeps the community one
+            click away from every section of every page. */}
+        <a
+          className={styles.social}
+          href={INSTAGRAM_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`Rahi on Instagram, ${INSTAGRAM_HANDLE}`}
+          title={`Rahi on Instagram · ${INSTAGRAM_HANDLE}`}
+        >
+          <InstagramGlyph size={17} />
+        </a>
         <a
           className={styles.cta}
           href={PLAY_STORE_URL}
@@ -69,6 +84,16 @@ export function SiteHeader({ current }: { current: "home" | "about" | "privacy" 
               {link.label}
             </a>
           ))}
+          <a
+            className={styles.mobileSocial}
+            href={INSTAGRAM_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <InstagramGlyph size={16} />
+            Instagram
+            <em>{INSTAGRAM_HANDLE}</em>
+          </a>
           <a
             className={styles.mobileCta}
             href={PLAY_STORE_URL}

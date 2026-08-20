@@ -323,6 +323,8 @@
 .footer { padding: 34px var(--pad); border-top: 1px solid var(--line); display: flex; align-items: center; gap: 30px; color: #82847d; font-size: 10px; letter-spacing: .1em; text-transform: uppercase; }
 .footer div { margin-left: auto; display: flex; gap: 24px; }
 .footer a:hover { color: var(--accent); }
+.footerSocial { display: inline-flex; align-items: center; gap: 7px; }
+.footerSocial svg { opacity: .85; }
 
 /* Shared section-by-section navigation. ScrollCue targets every direct
    section and the footer, so the longer story remains easy to traverse

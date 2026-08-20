@@ -115,6 +115,25 @@
 }
 
 .desktopNav .cta:hover { color: #0a1a00; background: #91ec5c; transform: translateY(-1px); }
+
+/* Instagram: a square-ish icon button inside the pill, sitting just before
+   the lime CTA. Lime on hover rather than at rest so it reads as secondary
+   to the install action but still invites the click. */
+.desktopNav .social {
+  width: 38px;
+  min-height: 38px;
+  margin-right: 2px;
+  padding: 0;
+  justify-content: center;
+  color: #d5d6d0;
+}
+
+.desktopNav .social:hover {
+  color: var(--accent, #7ee640);
+  background: #7ee6401f;
+  transform: translateY(-1px);
+}
+
 .mobileMenu { display: none; }
 
 @media (max-width: 700px) {
@@ -190,4 +209,18 @@
     gap: 10px;
   }
   .mobileMenu nav .mobileCta > span { flex: 0 0 auto; }
+
+  /* Labelled in the sheet — an unlabelled glyph in a text menu reads as
+     decoration. The handle trails in lime as the row's own value. */
+  .mobileMenu nav .mobileSocial {
+    gap: 10px;
+    color: #d3d5ce;
+  }
+  .mobileMenu nav .mobileSocial svg { flex: 0 0 auto; }
+  .mobileMenu nav .mobileSocial em {
+    margin-left: auto;
+    color: var(--accent, #7ee640);
+    font-style: normal;
+    font-size: 11px;
+  }
 }

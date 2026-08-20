@@ -18,3 +18,13 @@ export const PLAY_STORE_URL =
 /** Support + privacy mailboxes (GoDaddy Titan on the .com). */
 export const SUPPORT_EMAIL = "support@drivewithrahi.com";
 export const PRIVACY_EMAIL = "privacy@drivewithrahi.com";
+
+/**
+ * Instagram community. Verified 2026-08-20 (200 on https://www.instagram.com/rahidrives/).
+ *
+ * Instagram canonicalises to the `www.` host, so that is what we link — a
+ * bare-host link just pays a redirect. `@rahidrives` is the display form:
+ * link TEXT uses the handle, the href never shows it.
+ */
+export const INSTAGRAM_URL = "https://www.instagram.com/rahidrives";
+export const INSTAGRAM_HANDLE = "@rahidrives";

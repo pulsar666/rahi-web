@@ -1141,6 +1141,102 @@
   to { stroke-dashoffset: -0.25; }
 }
 
+/* ---- Instagram community card --------------------------------------------------
+   The "noticed by visitors" surface. It has to draw the eye without competing
+   with the lime Play CTA directly above it, so it inverts the relationship:
+   dark panel, lime glyph and lime handle, hairline border. Same card language
+   as the rest of the site (near-black fill, --line hairline, small radius).
+   The glyph sits in a tinted lime tile — the one filled shape — which is what
+   the eye actually catches from across the section. */
+.communityCard {
+  position: relative;
+  /* Fixed width rather than shrink-to-fit: the label + handle only need
+     ~300px, and letting the card size to its content left it visibly
+     narrower than the 235px Play CTA's optical weight. 330px reads as the
+     deliberate second half of a pair on the shared centre axis, and caps to
+     the column on phones. */
+  width: min(330px, 100%);
+  margin-top: 22px;
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  padding: 11px 16px 11px 11px;
+  border: 1px solid #33402a;
+  border-radius: 10px;
+  background: linear-gradient(180deg, #10140d, #0a0c08);
+  text-align: left;
+  transition: transform 0.25s, border-color 0.25s, background 0.25s;
+}
+
+.communityCard:hover {
+  transform: translateY(-3px);
+  border-color: var(--accent);
+  background: linear-gradient(180deg, #141a0f, #0c0f09);
+}
+
+.communityIcon {
+  flex: 0 0 auto;
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border-radius: 9px;
+  background: #7ee6401f;
+  color: var(--accent);
+  transition: background 0.25s;
+}
+
+.communityCard:hover .communityIcon {
+  background: #7ee6402e;
+}
+
+.communityText {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  line-height: 1;
+}
+
+/* Uppercase micro-header, same 9.5px floor as .miniLabel elsewhere. */
+.communityText small {
+  font-size: 9.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #8f918a;
+}
+
+.communityText strong {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--accent);
+}
+
+.communityArrow {
+  margin-left: auto;
+  font-size: 15px;
+  color: #74776f;
+  transition: color 0.25s, transform 0.25s;
+}
+
+.communityCard:hover .communityArrow {
+  color: var(--accent);
+  transform: translate(2px, -2px);
+}
+
+/* Footer social link: glyph + word, inline with the other footer links. */
+.footerSocial {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.footerSocial svg {
+  /* The footer sets 10.5px uppercase text; the glyph is optically heavier at
+     matched size, so it rides slightly larger and one notch dimmer. */
+  opacity: 0.85;
+}
+
 /* ---- Footer ------------------------------------------------------------------- */
 .footer {
   border-top: 1px solid #242522;
@@ -1754,6 +1850,9 @@
   }
   .finalCta > p:not(.sectionLabel) {
     margin: 18px 0 28px;
+  }
+  .communityCard {
+    margin-top: 18px;
   }
   .footer {
     padding: 28px 20px calc(28px + env(safe-area-inset-bottom));
