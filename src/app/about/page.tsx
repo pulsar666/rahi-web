@@ -3,7 +3,7 @@ import { Wordmark } from "@/components/Wordmark";
 import { ScrollCue } from "@/components/ScrollCue";
 import { SiteHeader } from "@/components/SiteHeader";
 import { InstagramGlyph } from "@/components/InstagramGlyph";
-import { INSTAGRAM_URL, PLAY_STORE_URL } from "@/lib/links";
+import { INSTAGRAM_HANDLE, INSTAGRAM_URL, PLAY_STORE_URL } from "@/lib/links";
 import styles from "./about.module.css";
 
 export const metadata: Metadata = {
@@ -210,6 +210,12 @@ export default function About() {
         <h2>Come help shape<br /><span>the road ahead.</span></h2>
         <p>Built in India, for Indian roads—and for everyone sharing them.</p>
         <a href={PLAY_STORE_URL} target="_blank" rel="noopener noreferrer">Get it on Google Play <span>↗</span></a>
+        <a className={styles.communityCta} href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer">
+          <InstagramGlyph size={17} />
+          <i>Follow</i>
+          {INSTAGRAM_HANDLE}
+          <span aria-hidden="true">↗</span>
+        </a>
       </section>
 
       <footer className={styles.footer}>

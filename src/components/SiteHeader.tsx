@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Wordmark } from "./Wordmark";
 import { InstagramGlyph } from "./InstagramGlyph";
 import { INSTAGRAM_HANDLE, INSTAGRAM_URL, PLAY_STORE_URL } from "@/lib/links";
@@ -30,6 +30,41 @@ export function SiteHeader({ current }: { current: "home" | "about" | "privacy" 
     return () => {
       cancelAnimationFrame(frame);
       window.removeEventListener("scroll", onScroll);
+    };
+  }, []);
+
+  /* Dismiss the phone menu on an outside tap / Escape.
+
+     A bare <details> only toggles from its own <summary>, so an open menu
+     could ONLY be closed by finding the Menu button again — tapping the page
+     behind it did nothing, which is not how any overlay is expected to
+     behave. <details> is kept (it still opens with no JS, and carries the
+     expanded/collapsed semantics for free); this only adds the dismissal.
+
+     `pointerdown`, not `click`: it fires before the tap can activate whatever
+     is underneath, so the first tap outside closes the menu instead of
+     closing it AND triggering a link. Listening on the document in the
+     CAPTURE phase means a stopPropagation() somewhere in the page can't
+     leave the menu stuck open. */
+  const menuRef = useRef<HTMLDetailsElement>(null);
+
+  useEffect(() => {
+    const close = () => {
+      const el = menuRef.current;
+      if (el?.open) el.open = false;
+    };
+    const onPointerDown = (e: PointerEvent) => {
+      const el = menuRef.current;
+      if (el?.open && !el.contains(e.target as Node)) close();
+    };
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") close();
+    };
+    document.addEventListener("pointerdown", onPointerDown, true);
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("pointerdown", onPointerDown, true);
+      document.removeEventListener("keydown", onKeyDown);
     };
   }, []);
 
@@ -73,7 +108,7 @@ export function SiteHeader({ current }: { current: "home" | "about" | "privacy" 
         </a>
       </nav>
 
-      <details className={styles.mobileMenu}>
+      <details className={styles.mobileMenu} ref={menuRef}>
         <summary aria-label="Open site navigation">
           <span>Menu</span>
           <svg viewBox="0 0 18 18" aria-hidden="true"><path d="M3 5h12M3 9h12M3 13h12" /></svg>

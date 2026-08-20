@@ -320,6 +320,48 @@
 .finalCta > a { display: inline-flex; gap: 35px; padding: 16px 20px 16px 24px; border-radius: 3px; background: var(--accent); color: #0a1a00; font-size: 13px; font-weight: 700; transition: transform .2s ease; }
 .finalCta > a:hover { transform: translateY(-2px); }
 
+/* Instagram, paired under the store CTA exactly as on Home. Same geometry
+   as the button above it, filled off-white instead of lime so the two read
+   as a matched pair without competing in the same hue.
+
+   NOTE the specificity: `.finalCta > a` above already paints EVERY direct
+   anchor in this section lime, so these overrides have to be at least as
+   specific — a bare `.communityCta` block would lose and render lime. */
+.finalCta > a.communityCta {
+  align-items: center;
+  /* About's own CTA runs a 35px gap and 16px block padding; this mirrors it,
+     less 1px block padding so the 1px border lands both on one height. */
+  gap: 10px;
+  margin-top: 14px;
+  padding: 15px 20px 15px 24px;
+  border: 1px solid var(--ink);
+  background: var(--ink);
+  color: #0a0c08;
+  white-space: nowrap;
+  transition: transform .2s ease, background .2s ease, border-color .2s ease;
+}
+
+.finalCta > a.communityCta:hover {
+  border-color: #fff;
+  background: #fff;
+}
+
+.communityCta svg { flex: 0 0 auto; }
+
+/* The handle is the emphasis; "Follow" is the quieter verb. */
+.communityCta i { font-style: normal; font-weight: 500; color: #5c5f57; }
+
+.communityCta > span {
+  flex: 0 0 auto;
+  margin-left: 4px;
+  font-size: 15px;
+  font-weight: 400;
+  color: #0a0c08;
+  transition: transform .2s ease;
+}
+
+.finalCta > a.communityCta:hover > span { transform: translate(2px, -2px); }
+
 .footer { padding: 34px var(--pad); border-top: 1px solid var(--line); display: flex; align-items: center; gap: 30px; color: #82847d; font-size: 10px; letter-spacing: .1em; text-transform: uppercase; }
 .footer div { margin-left: auto; display: flex; gap: 24px; }
 .footer a:hover { color: var(--accent); }

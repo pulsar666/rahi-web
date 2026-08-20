@@ -193,11 +193,42 @@ svg {
   color: var(--on-accent);
 }
 
-/* Visible keyboard focus — never remove the ring without replacing it. */
+/* Visible keyboard focus — never remove the ring without replacing it.
+
+   `border-radius: inherit` rather than a fixed value: the ring is drawn on
+   the element's OWN shape, so it follows a 999px nav pill, a 3px CTA and a
+   10px chip alike. A hardcoded 4px drew a near-square box around the round
+   Menu pill, which is what it looked like — a sharp box stuck to a circle.
+   (The property is safe here: `outline` respects border-radius in every
+   engine we target, and elements with no radius are unaffected.) */
 :focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 3px;
-  border-radius: 4px;
+  border-radius: inherit;
+}
+
+/* Kill the OS tap flash — a grey-black RECTANGLE that ignores border-radius,
+   so on the rounded nav pill and CTAs it flashed a hard-cornered box on every
+   touch. Removing it leaves no press feedback at all, so interactive elements
+   get an explicit :active state below instead. */
+a,
+button,
+summary,
+[role="button"] {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Press feedback, shape-correct by construction because it tints the element
+   itself rather than painting a box over it. Scoped to coarse pointers so a
+   mouse keeps the existing hover treatments untouched. */
+@media (hover: none) {
+  a:active,
+  button:active,
+  summary:active,
+  [role="button"]:active {
+    opacity: 0.72;
+    transition: opacity 0.06s ease-out;
+  }
 }
 
 /* ---- Global keyframes ---------------------------------------------------
