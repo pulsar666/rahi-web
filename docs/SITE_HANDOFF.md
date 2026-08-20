@@ -164,6 +164,16 @@ before changing permission or diagnostic-data claims.
 3. Portrait phones get their own tuned block (`max-width:800 and portrait`),
    plus `max-height:700` and tiny-phone escalations.
 4. Anything interactive must work without hover (phones) and with keyboard.
+5. **The phone menu closes on outside tap / Escape** (`SiteHeader.tsx`). It is
+   still a `<details>` (works with no JS), with dismissal added via a
+   capture-phase `pointerdown` listener — `pointerdown`, not `click`, so the
+   first outside tap does not also activate what is under it. If you touch
+   that component, re-check: outside-tap closes, inside-tap does NOT, summary
+   still toggles, Escape closes, and menu links still navigate.
+6. **Focus rings use `border-radius: inherit`** and the OS tap-highlight is
+   cleared globally in `globals.css`, replaced by an `:active` opacity dip
+   under `@media (hover: none)`. Do not reintroduce a fixed radius on
+   `:focus-visible` — it drew a sharp box around the 999px nav pill.
 
 ## 5. How to verify (the harness)
 
@@ -211,6 +221,15 @@ Traps (each cost real debugging time):
    network is linked yet — if one is added, it joins the same three
    placements, and the header pill gets a group rather than a second
    standalone icon (the nav is already width-tight on narrow desktops).
+
+   The final-CTA button is `.communityCta` on Home AND About: same geometry
+   as `.primaryCta`, filled `--ink` off-white rather than lime so the pair
+   reads as one unit without two limes competing. ⚠️ About styles its CTA
+   as `.finalCta > a` — a descendant selector that paints EVERY direct
+   anchor in that section lime — so the override there must be
+   `.finalCta > a.communityCta`; a bare class loses on specificity.
+   A first attempt used a 10px-radius two-line card and was rejected: the
+   section already had a button language, and the card read as borrowed.
 7. **Waitlist**: mailto works but loses people; a real form needs a server →
    Cloudflare Pages + Functions migration path (CONTRIBUTING §3), or a
    third-party form endpoint.
