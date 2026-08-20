@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Wordmark } from "@/components/Wordmark";
 import { ScrollCue } from "@/components/ScrollCue";
 import { SiteHeader } from "@/components/SiteHeader";
+import { PLAY_STORE_URL } from "@/lib/links";
 import styles from "./about.module.css";
 
 export const metadata: Metadata = {
@@ -207,7 +208,7 @@ export default function About() {
         <p className={styles.eyebrow}>This is only the beginning</p>
         <h2>Come help shape<br /><span>the road ahead.</span></h2>
         <p>Built in India, for Indian roads—and for everyone sharing them.</p>
-        <a href="mailto:support@drivewithrahi.com?subject=Rahi%20early%20access">Join early access <span>↗</span></a>
+        <a href={PLAY_STORE_URL} target="_blank" rel="noopener noreferrer">Get it on Google Play <span>↗</span></a>
       </section>
 
       <footer className={styles.footer}>

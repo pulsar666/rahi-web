@@ -1189,6 +1189,22 @@
   animation-name: minimalDriftUp;
 }
 
+/* Back-to-top: sits to the LEFT of the up/down pair. Deliberately does not
+   share their drift animation — it is a jump, not a step, and animating it
+   in sync would read as a third arrow. */
+.scrollCue button[data-direction="top"] svg {
+  animation: none;
+  width: 17px;
+  height: 17px;
+}
+
+.scrollCue button[data-direction="top"] {
+  animation: none;
+  opacity: .82;
+}
+
+.scrollCue button[data-direction="top"]:hover { opacity: 1; }
+
 .scrollCue button:disabled svg {
   animation: none;
 }

@@ -142,8 +142,35 @@ export function ScrollCue({ className }: { className?: string }) {
     return () => window.removeEventListener("keydown", onKey);
   }, [move]);
 
+  /** Jump straight back to the very top, from anywhere on the page. The
+   *  up arrow steps ONE section at a time, which is a long way back from
+   *  the footer; this is the shortcut. Hidden at the top, where it would
+   *  do nothing. */
+  const toTop = useCallback(() => {
+    pendingRef.current = 0;
+    window.clearTimeout(settleTimer.current);
+    settleTimer.current = window.setTimeout(() => {
+      pendingRef.current = null;
+    }, 1200);
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
+  }, []);
+
   return (
     <nav className={className} aria-label="Page section navigation">
+      <button
+        type="button"
+        data-direction="top"
+        disabled={!canMove.up}
+        aria-label="Back to top of page"
+        title="Back to top"
+        onClick={toTop}
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M4 11.5 12 5l8 6.5" />
+          <path d="M6.8 10.6V19h10.4v-8.4" />
+        </svg>
+      </button>
       <button
         type="button"
         data-direction="up"

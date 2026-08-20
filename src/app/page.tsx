@@ -2,6 +2,7 @@ import styles from "./page.module.css";
 import { Wordmark } from "@/components/Wordmark";
 import { SiteHeader } from "@/components/SiteHeader";
 import { ScrollCue } from "@/components/ScrollCue";
+import { PLAY_STORE_URL } from "@/lib/links";
 
 const pillars = [
   { number: "01", title: "Feel the drive", copy: "Your phone reads every brake, corner and surge — quietly, while you focus on the road." },
@@ -62,7 +63,7 @@ export default function Home() {
           <h1>Know your drive.<br /><em>Own the next one.</em></h1>
           <p className={styles.heroCopy}>Rahi turns your phone into a thoughtful driving coach — reading every journey, revealing your habits, and helping you get better where it matters.</p>
           <div className={styles.heroActions}>
-            <a className={styles.primaryCta} href="mailto:support@drivewithrahi.com?subject=Rahi%20early%20access">Join early access <span>↗</span></a>
+            <a className={styles.primaryCta} href={PLAY_STORE_URL} target="_blank" rel="noopener noreferrer">Get it on Google Play <span>↗</span></a>
             <a className={styles.textCta} href="#how">Discover Rahi <span>↓</span></a>
           </div>
         </div>
@@ -191,10 +192,10 @@ export default function Home() {
 
       <section className={styles.finalCta}>
         <div className={styles.finalRoute} aria-hidden="true"><svg viewBox="0 0 900 180"><path pathLength="1" d="M-30 150C100 120 170 170 268 112S430 18 520 65s112 107 205 58S830 30 940 16" /></svg></div>
-        <p className={styles.sectionLabel}>Coming soon to Android</p>
+        <p className={styles.sectionLabel}>Now on Google Play</p>
         <h2>Drive for the one<br /><span>behind you.</span></h2>
         <p>Built in India, for Indian roads.</p>
-        <a className={styles.primaryCta} href="mailto:support@drivewithrahi.com?subject=Rahi%20early%20access">Ask for early access <span>↗</span></a>
+        <a className={styles.primaryCta} href={PLAY_STORE_URL} target="_blank" rel="noopener noreferrer">Get it on Google Play <span>↗</span></a>
       </section>
 
       <footer className={styles.footer}><Wordmark height={22} /><p>Drive · Score · Improve</p><div><a href="/about/">Our story</a><a href="/privacy/">Privacy</a><a href="mailto:support@drivewithrahi.com">Contact</a><span>© {new Date().getFullYear()} Rahi</span></div></footer>

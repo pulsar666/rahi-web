@@ -1,4 +1,8 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import { Wordmark } from "./Wordmark";
+import { PLAY_STORE_URL } from "@/lib/links";
 import styles from "./SiteHeader.module.css";
 
 const links = [
@@ -8,8 +12,28 @@ const links = [
 ];
 
 export function SiteHeader({ current }: { current: "home" | "about" | "privacy" }) {
+  /* The header is position:fixed so navigation is reachable from any section.
+     Past the first slice of the page it swaps its hero gradient for a solid
+     blurred bar — over arbitrary section backgrounds a transparent header
+     leaves the wordmark and links unreadable. */
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    let frame = 0;
+    const onScroll = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => setScrolled(window.scrollY > 40));
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", onScroll);
+    };
+  }, []);
+
   return (
-    <header className={styles.header}>
+    <header className={styles.header} data-scrolled={scrolled ? "true" : undefined}>
       <a className={styles.brand} href="/" aria-label="Rahi home">
         <Wordmark height={25} />
       </a>
@@ -24,8 +48,13 @@ export function SiteHeader({ current }: { current: "home" | "about" | "privacy" 
             {link.label}
           </a>
         ))}
-        <a className={styles.cta} href="mailto:support@drivewithrahi.com?subject=Rahi%20early%20access">
-          Get early access
+        <a
+          className={styles.cta}
+          href={PLAY_STORE_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Get it on Google Play
         </a>
       </nav>
 
@@ -40,8 +69,13 @@ export function SiteHeader({ current }: { current: "home" | "about" | "privacy" 
               {link.label}
             </a>
           ))}
-          <a className={styles.mobileCta} href="mailto:support@drivewithrahi.com?subject=Rahi%20early%20access">
-            Get early access <span>↗</span>
+          <a
+            className={styles.mobileCta}
+            href={PLAY_STORE_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Get it on Google Play <span>↗</span>
           </a>
         </nav>
       </details>

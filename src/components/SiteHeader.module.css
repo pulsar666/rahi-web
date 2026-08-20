@@ -1,5 +1,12 @@
+/* FIXED, not absolute: the nav has to stay reachable from any section of a
+   long scrolling page. As `absolute` it scrolled away with the hero and the
+   only way back to navigation was scrolling to the top.
+
+   Consequence of fixing it: the gradient that used to fade into the hero
+   now sits over every section, so it is applied to a ::before layer that
+   fades out once you leave the top (see .header::before). */
 .header {
-  position: absolute;
+  position: fixed;
   z-index: 40;
   top: 0;
   left: 0;
@@ -9,7 +16,31 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  /* Background moves to ::before so it can fade independently of content. */
+  background: transparent;
+  pointer-events: none;
+}
+
+/* Children stay interactive — only the bar itself is click-through, so the
+   transparent right-hand gap doesn't eat clicks on the page beneath. */
+.header > * { pointer-events: auto; }
+
+.header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
   background: linear-gradient(180deg, #000c 0%, #0005 58%, transparent 100%);
+  transition: opacity .3s ease;
+  pointer-events: none;
+}
+
+/* Scrolled state: swap the hero gradient for a solid blurred bar so the
+   wordmark and nav stay legible over arbitrary section backgrounds. */
+.header[data-scrolled="true"]::before {
+  background: #08090899;
+  backdrop-filter: blur(14px) saturate(1.1);
+  -webkit-backdrop-filter: blur(14px) saturate(1.1);
+  border-bottom: 1px solid #ffffff14;
 }
 
 .brand { color: white; flex: 0 0 auto; }
